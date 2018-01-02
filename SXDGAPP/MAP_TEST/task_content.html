@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+		<link rel="stylesheet" href="./css/mui.min.css">
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			#resultPopover{
+				margin: 20% 0;
+				height: 60%;
+			}
+			#searchtitle{
+				height: 35px;
+				background-color: #007AFF;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+			#searchtitle span{
+				color: #FFFFFF;
+				line-height: 30px;
+				margin: 0 36%;
+			}
+			.mui-plus .plus{
+				display: inline;
+			}
+			
+			.plus{
+				display: none;
+			}
+			p {
+				text-indent: 22px;
+			}
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			.mui-scroll-wrapper{
+				height: 90%;
+			}
+			#PopoverModal{
+				margin: 10% 0;
+			}
+			.mui-popover {
+				width: 70%;
+				height: 50%;
+			}
+			.mui-content {
+				padding: 10px;
+			}
+			#PopoverTitle{
+				height: 15%;
+				background-color: #2187E7;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+			#PopoverTitle span{
+				line-height: 40px;
+				color: #FFFFFF;
+				margin: 0 35%;
+			}
+			#searchcontent{
+				margin-top: 17%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--下拉刷新容器-->
+		<!--<div class="mui-content" >-->
+		<div style="height: calc(100vh - 149px);">
+
+			<div id="pullrefresh" class="mui-content" style="height: inherit;">
+				<div>
+					<!--数据列表-->
+					<ul id="taskList" class="mui-table-view">
+						<li id="CK_task" class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">查勘任务<span id="CK_taskCount" class="mui-badge mui-badge-danger" style="margin-right: 10px;">0</span></a>
+							<div id="CK_taskArea" class="mui-collapse-content">
+								<ul class="mui-table-view" id="CK_taskAreaUL">
+								    
+								</ul>
+							</div>
+						</li>
+
+						<li id="SG_task" class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">施工验收任务<span id="SG_taskCount" class="mui-badge mui-badge-danger" style="margin-right: 10px;">0</span></a>
+							<div id="SG_taskArea" class="mui-collapse-content">
+								<ul class="mui-table-view" id="SG_taskAreaUL">
+								</ul>
+							</div>
+						</li>
+
+						<li id="ZG_task" class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">整改验收任务<span id="ZG_taskCount" class="mui-badge mui-badge-danger" style="margin-right: 10px;">0</span></a>
+							<div id="ZG_taskArea" class="mui-collapse-content">
+								<ul class="mui-table-view" id="ZG_taskAreaUL">
+								</ul>
+							</div>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="mui-card" style="z-index: 100;">
+			<form class="mui-input-group">
+				<div id="free_line" class="mui-input-row">
+					<label>线路编号</label>
+					<div hidden="hidden" class="Free_lineDiv"></div>
+					<input type="text" class="mui-input-clear mui-input" placeholder="请输入搭挂线路信息" onkeyup="SearchHangLine(event,this.value)">
+				</div>
+				<div id="free_pole" class="mui-input-row">
+					<div hidden="hidden" class="Free_poleDiv"></div>
+					<label>线杆编号</label>
+					<input type="text" class="mui-input-clear mui-input" placeholder="请输入线杆信息" onkeyup="SearchPole(event,this.value)">
+				</div>
+			</form>
+
+			<button class="mui-btn searchbtn" style="height:40px;margin-bottom: 10px;width:97%" onclick="startFreePatrol()"><span class="mui-icon mui-icon-paperplane"></span>  开始自由巡检</button>
+		</div>
+		<div id="PopoverModal" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div id="PopoverTitle">
+					<span>查询结果</span>
+			</div>
+			<div class="mui-scroll-wrapper" id="searchcontent">
+				<div class="mui-scroll">
+					<ul class="mui-table-view" id="SearchResult">
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script>
+			/**
+			 * 下啦刷新
+			 */
+			mui.init(/*{
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+				}
+			}*/);
+
+			/*mui.preload({
+				url: 'defectRecord.html',
+				id: 'defectRecord'
+			});*/
+
+			mui.plusReady(function() {
+				//$("#taskList").hide();
+				//$("#taskList").css('display','block'); 
+				//$("#none_task").hide();
+				//$("#none_task").css('display','block'); 
+				getTasks();
+				//alert(plus.storage.getItem("userid"));
+			});
+			var urlJson;
+			$.getJSON("js/properties.json", function(data) {
+				urlJson = data[0].url;
+			});
+			mui('.mui-scroll-wrapper').scroll();
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			//function pulldownRefresh() {
+				//setTimeout(function() {
+					/*var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					for(var i = cells.length, len = i + 5; i < len; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell mui-collapse';
+						li.innerHTML = '<a class="mui-navigate-right" href="#">任务' + i + '</a><span class="mui-badge mui-badge-danger" style="margin-right: 30px;">' + i + '</span><div class="mui-collapse-content"></div>';
+						//下拉刷新，新纪录插到最前面；
+						table.insertBefore(li, table.firstChild);
+					}*/
+					//getTasks();
+					//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				//}, 2000);
+			//}
+			/**
+			 * 得到任务
+			 * 查勘，整改，验收
+			 */
+			var CK_taskArea=document.getElementById("CK_taskAreaUL");
+			var SG_taskArea=document.getElementById("SG_taskAreaUL");
+			var ZG_taskArea=document.getElementById("ZG_taskAreaUL");
+			function getTasks() {
+				/**
+				 * 查看所有验收  整改 查看任务
+				 */
+				mui.ajax(urlJson + "FaultMS/selectTasks.spring", {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var applytask=data[0].applytask;
+						var faulttask=data[0].faulttask;
+						var ckCount=0;
+						var sgCount=0; 
+						/**
+						 * 现场勘查以及施工验收
+						 */
+						CK_taskArea.innerHTML="";
+						ZG_taskArea.innerHTML="";
+						SG_taskArea.innerHTML="";
+						if(applytask.length>0)
+						{
+							for (var i=0;i<applytask.length;i++) {
+								var li=document.createElement('li');
+								if(applytask[i].statusname=="现场查勘")
+								{
+									li.className='mui-table-view-cell';
+									li.innerHTML='<li><span>'+applytask[i].hanglinename+'</span><div hidden="hidden">'+applytask[i].hanglineid+'</div><label hidden="hidden">'+applytask[i].applyid+'</label></li><button type="button" onclick=handerApplyTask(event,0,'+applytask[i].hanglineid+',"'+applytask[i].applyid+'","'+applytask[i].processid+'",'+applytask[i].hanglineid+',"'+applytask[i].unitid+'") data-loading-text="处理中" class="mui-btn mui-btn-warning">处理</button>';
+									li.onclick=function(){
+										InsertintoLineChk($(this).find("label").eq(0).text(),$(this).find("div").eq(0).text(),$(this).find("span").eq(0).text(),0,null);
+									}
+									CK_taskArea.appendChild(li);
+									ckCount++;
+								}
+								else if(applytask[i].statusname=="施工验收"){
+									li.className='mui-table-view-cell';
+									li.innerHTML='<li><span>'+applytask[i].hanglinename+'</span><div hidden="hidden">'+applytask[i].hanglineid+'</div><label hidden="hidden">'+applytask[i].applyid+'</label></li><button type="button" onclick=handerApplyTask(event,1,'+applytask[i].hanglineid+',"'+applytask[i].applyid+'","'+applytask[i].processid+'",'+applytask[i].hanglineid+',"'+applytask[i].unitid+'") data-loading-text="处理中" class="mui-btn mui-btn-warning">处理</button>';
+									li.onclick=function(){
+										InsertintoLineChk($(this).find("label").eq(0).text(),$(this).find("div").eq(0).text(),$(this).find("span").eq(0).text(),0,null);
+									}
+									SG_taskArea.appendChild(li);
+									sgCount++;
+								}
+							}
+						}
+						$("#CK_taskCount").text(ckCount);
+						$("#SG_taskCount").text(sgCount);
+						/**
+						 * 整改验收
+						 */
+						var zgCount=0;
+						if(faulttask.length>0)
+						{
+							for(var j=0;j<faulttask.length;j++)
+							{
+								var li=document.createElement('li');
+								li.className='mui-table-view-cell';
+								li.innerHTML='<li><span>'+faulttask[j].linedetailList[0].name+'</span><div hidden="hidden">'+faulttask[j].linedetailList[0].poleid+'</div></li><button type="button" onclick=handerFaultTask(event,'+faulttask[j].proccessid+',"'+faulttask[j].faultid+'","'+faulttask[j].status+'") data-loading-text="处理中" class="mui-btn mui-btn-warning">处理</button>';
+								/**
+								 * 点击线杆跳转到错误上报界面
+								 */
+								li.onclick=function(){
+									//alert($(this).find("div").eq(0).text());
+									InsertintoLineChk(0,0,null,$(this).find("div").eq(0).text(),$(this).find("span").eq(0).text());
+								}
+								ZG_taskArea.appendChild(li);
+								zgCount++;
+							}
+						}
+						$("#ZG_taskCount").text(zgCount);
+					}
+				});
+			}
+			/**\n
+			 * 处理任务点击事件
+			 * hangtype  1表示通过或者驳回0表示通过
+			 */
+			function handerApplyTask(thisevent,handtype,hanglingid,applyid,processid,unitid){
+				var btnArray=new Array();
+				if(handtype==1)
+				{
+					btnArray = ['通过', '驳回','取消'];
+					var flagtype=0;
+					mui.confirm('施工是否完成？', '施工审核', btnArray, function(e) {
+						if (e.index == 0) {
+							flagtype=1;
+							mui.ajax(urlJson + "SQXXGL/handerApply.spring", {
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								data:{
+									"processid":processid,
+									"applyid":applyid,
+									"hanglineid":hanglingid,
+									"handtype":flagtype,
+									"userid":plus.storage.getItem("userid"),
+									"unitid":unitid,
+									"handermemo":"查勘完成",
+								},
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									mui.toast(data[0].msg);
+									var ws=plus.webview.currentWebview();
+									ws.reload(true);
+								}
+							});
+						} else if(e.index==1){
+							flagtype=0;
+							mui.ajax(urlJson + "SQXXGL/handerApply.spring", {
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								data:{
+									"processid":processid,
+									"applyid":applyid,
+									"hanglineid":hanglingid,
+									"handtype":flagtype,
+									"userid":plus.storage.getItem("userid"),
+									"unitid":unitid,
+									"handermemo":"查勘完成"
+								},
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									mui.toast(data[0].msg);
+									var ws=plus.webview.currentWebview();
+									ws.reload(true);
+								}
+							});
+						}
+					});
+				}
+				else{
+					var btnArray = ['通过','取消'];
+					var flag=1;
+					mui.confirm('查勘是否完成？', '现场查勘', btnArray, function(e) {
+						if (e.index == 0) {
+							mui.ajax(urlJson + "SQXXGL/handerApply.spring", {
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								data:{
+									"processid":processid,
+									"applyid":applyid,
+									"hanglineid":hanglingid,
+									"handtype":flag,
+									"userid":plus.storage.getItem("userid"),
+									"unitid":unitid,
+									"handermemo":"查勘完成"
+								},
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									mui.toast(data[0].msg);
+									var ws=plus.webview.currentWebview();
+									ws.reload(true);
+								}
+							});
+						}
+						else{
+							
+						}
+					});
+				}
+			 	/*mui.ajax(urlJson + "FaultMS/handerRepairAct.spring", {
+					data:{
+						userid:1,
+						processid:
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						
+					}
+						
+			 	});*/
+			 	thisevent.stopPropagation();
+			}
+			/**
+			 * 审批流程处理
+			 */
+			function handerFaultTask(thisevent,processid,faultid,status){
+				var ws=plus.webview.currentWebview();
+				var btnArray = ['合格','不合格','取消'];
+					var flag=1;
+					mui.confirm('整改是否合格？', '整改验收', btnArray, function(e) {
+						if (e.index == 0) {
+							mui.ajax(urlJson + "FaultMS/handerRepairAct.spring", {
+							data:{
+								userid:plus.storage.getItem("userid"),
+								processid:processid+"",
+								handtype:1+"",
+								faultid:faultid+"",
+								status:status+"",
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								mui.toast(data[0].msg);
+								ws.reload(true);
+							}
+						});
+						}
+						else if(e.index==1){
+							mui.ajax(urlJson + "FaultMS/handerRepairAct.spring", {
+							data:{
+								userid:plus.storage.getItem("userid"),
+								processid:processid+"",
+								handtype:0+"",
+								faultid:faultid+"",
+								status:status+"",
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								mui.toast(data[0].msg);
+								ws.reload(true);
+							}
+						});
+						}
+					});
+				thisevent.stopPropagation();
+			}
+			/**
+			 * 搭挂线路搜索
+			 */
+			function SearchHanglineInfo(hangname){
+				if(hangname==null||hangname=="")
+				{
+					mui.toast("请输入搭挂线路信息", {duration: 1000,type: 'div'});
+				}
+				else
+				{
+					$.ajax({
+						type: "post",
+						url: urlJson + "HangLine/selectHangLineByName.spring",
+						data:{
+							"hangname":hangname,
+						},
+						datatype: "json",
+						success: function(data) {
+							var searchresult=document.getElementById("SearchResult");
+							searchresult.innerHTML="";
+							if(data.length>0)
+							{
+								for (var i=0;i<data.length;i++) {
+									//var id=data[i].hanglineid;
+									//var flag=1;
+									var li=document.createElement('li');
+									li.className='mui-table-view-cell';
+									li.innerHTML="<li><span>"+data[i].hangname+"</span><div hidden='hidden'>"+data[i].hanglineid+"</div></li>";
+									//var iii=data[i].hanglineid;
+									li.onclick=function(){
+										mui("#PopoverModal").popover("hide");
+										$("#free_line input").val("");
+										$("#free_line input").val($(this).find("span").eq(0).text());
+										//$("#free_line").val();
+									}
+									searchresult.appendChild(li);
+								}
+							}
+							else{
+							}
+						},
+					});
+				}
+			}
+			/**
+			 * 搭挂线杆搜索 
+			 */
+			function SearchHangPole(polename){
+				if(polename==null||polename=="")
+				{
+					mui.toast("请输入搭挂线杆信息", {duration: 1000,type: 'div'});
+				}
+				else{
+					$.ajax({
+						type: "post",
+						url: urlJson + "LinePole/selectHangPoleByName.spring",
+						data:{
+							"polename":polename,
+						},
+						datatype: "json",
+						success: function(data) {
+							var searchresult=document.getElementById("SearchResult");
+							searchresult.innerHTML="";
+							if(data.length>0)
+							{
+								for (var i=0;i<data.length;i++) {
+									//var id=data[i].hanglineid;
+									//var flag=1;
+									var li=document.createElement('li');
+									li.className='mui-table-view-cell';
+									li.innerHTML="<li><span>"+data[i].name+"</span></li>"
+									li.onclick=function(){
+										mui("#PopoverModal").popover("hide");
+										$("#free_pole input").val("");
+										$("#free_pole input").val($(this).find("span").text());
+										//$("#free_line").val();
+									}
+									searchresult.appendChild(li);
+								}
+							}
+							else{
+							}
+						},
+					});
+				}
+			}
+			/**
+			 * 开启巡线
+			 */
+			function startFreePatrol() {
+				/**
+				 * 新建线路检查
+				 */
+				/**
+				 * 1.搭挂线路不为空
+				 * 2.都为空
+				 * 3.线杆不为空
+				 */
+				var Pinfo=$("#free_pole input").val();
+				var Linfo=$("#free_line input").val();
+				if((Pinfo==null||Pinfo=="")&&(Linfo==null||Linfo=="")){
+					mui.toast("请填入线路或线杆信息");
+				}
+				else if((Linfo!=null&&Linfo!="")){
+					InsertNewLineChk(1);
+				}
+				else{
+					InsertNewLineChk(0);
+				}
+			}
+			/**
+			 * 查找搭挂线路
+			 * @param {Object} e
+			 * @param {Object} thisval
+			 */
+			function SearchHangLine(e,thisval) {
+				//13表示enter
+				if(e.keyCode == 13) {
+					$("#free_line input").blur();
+					SearchHanglineInfo(thisval)
+					mui('.mui-popover').popover('show',document.getElementById("free_line"));
+				}
+			}
+			function SearchPole(e,thisval)
+			{
+				if(e.keyCode == 13) {
+					$("#free_pole input").blur();
+					SearchHangPole(thisval)
+					mui('.mui-popover').popover('show',document.getElementById("free_pole"));
+				}
+			}
+			/**
+			 * 添加线路，线杆检查
+			 * flag {1表示搭挂线路 0表示线杆}
+			 */
+			function InsertNewLineChk(flag){
+				if(flag==0)
+				{
+					/**
+					 * 精确搜索线杆
+					 */
+					$.ajax({
+						type: "post",
+						url: urlJson + "LinePole/selectHangPoleByAllName.spring",
+						data:{
+							"polename":$("#free_pole input").val(),
+						},
+						datatype: "json",
+						success: function(data) {
+							if(data.length>0)
+							{
+								InsertintoLineChk(0,0,null,data[0].poleid,data[0].name);
+							}
+							else{
+								mui.toast("请输入正确线杆信息");
+							}
+						}
+					});
+				}
+				else{
+					/**
+					 * 精确搜索线路
+					 */
+					$.ajax({
+						type: "post",
+						url: urlJson + "HangLine/selectHangLineByAllName.spring",
+						data:{
+							"hangname":$("#free_line input").val(),
+						},
+						datatype: "json",
+						success: function(data) {
+							if(data.length>0)
+							{
+								InsertintoLineChk(0,data[0].hanglineid,data[0].hangname,0,null);
+							}
+							else{
+								mui.toast("搭挂线路不存在")
+							}
+						}
+					});
+				}
+			}
+			/**
+			 * 开启检修界面
+			 * @param {Object} hanglineid
+			 * @param {Object} hangname
+			 * @param {Object} poleid
+			 * @param {Object} polename
+			 */
+			function InsertintoLineChk(applyid,hanglineid,hangname,poleid,polename){
+					/**
+					 *创建一次线路检查返回逐渐id 
+					 */
+					mui.ajax( urlJson + "FaultMS/insertNewLineChk.spring", {
+					data:JSON.stringify(LineChkArr(hanglineid,applyid)),
+					dataType: 'json', //服务器返回json格式数据
+					contentType: "application/json",
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						mui.openWindow({
+						url: 'faultRecord.html',
+						id: 'faultRecord',
+						extras:{
+							hanglineid:hanglineid,
+							linecheckid:data[0].linecheckid,
+							poleid:poleid,
+							hangname:hangname,
+							polename:polename,
+							processid:0
+						},
+					});
+					}
+				});
+			}
+			/**
+			 * 添加信息
+			 */
+			function LineChkArr(hanglineid,applyid){
+				var lineChk={};
+					lineChk['userid']=plus.storage.getItem("userid");
+					lineChk['checktypeid']=1;
+					//lineChk['timeString']="";
+					lineChk['status']=1;
+					lineChk['applyid']=applyid;
+				if(hanglineid==0)
+				{
+				}
+				else{
+					lineChk['hanglineid']=hanglineid;
+				}
+				return lineChk;
+			}
+		</script>
+	</body>
+
+</html>

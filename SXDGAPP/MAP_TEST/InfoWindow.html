@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+	</head>
+
+	<body style="height:140px">
+		<nav class="mui-bar mui-bar-tab" style="height:20px">
+
+			<a id="lineInfoBtn" class="mui-tab-item" onclick="showLineInfoTab()"> <!--href="#lineInfoTab"-->
+				<!--<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>-->
+				<span class="mui-tab-label">电力线路</span>
+			</a>
+			<a id="poleInfoBtn" class="mui-tab-item mui-active" onclick="showPoleInfoTab()"> <!--href="#poleInfoTab"-->
+				<!--<span class="mui-icon mui-icon-home"></span>-->
+				<span class="mui-tab-label">线杆及搭挂</span>
+			</a>
+			<a id="hangLineBtn" class="mui-tab-item" onclick="showHangInfoTab()"> <!--href="#hangInfoTab"-->
+				<!--<span class="mui-icon mui-icon-contact"></span>-->
+				<span class="mui-tab-label">搭挂线路</span>
+			</a>
+			<!--<a class="mui-tab-item"  href="#">
+				<span class="mui-icon mui-icon-contact" ></span>
+			</a>-->
+
+		</nav>
+
+		<div class="mui-content">
+			<div id="poleInfoTab" class="mui-control-content mui-active" >
+				<div id="hangdtlarea" style="width:55%;float:right">
+					<!--<div class="mui-card">-->
+					<ul id="hangDtlul" class="mui-table-view" style="max-height: 120px;overflow: auto;">
+
+					</ul>
+					<!--</div>-->
+				</div>
+
+				<div id="poleheader" style="width:45%;float:left;margin-top: 10px;">
+					<span>线杆编号：</span>
+					<span id="poleCode"></span>
+					<br>
+					<span>线杆高度：</span>
+					<span id="poleLeight"></span>
+					<br>
+					<span>线杆状态：</span>
+					<span id="poleStatus"></span>
+					<br>
+					<span>线杆类型：</span>
+					<span id="poleType"></span>
+					<br>
+					<!--<a class="mui-btn mui-icon mui-icon-navigate" style="font-size: 15px;width:90%;margin-top: -1px;" href="#shareArea"></span>位置分享</a>-->
+				</div>
+
+			</div>
+			<div id="lineInfoTab" class="mui-control-content" style="margin-top: 10px;">
+				<div id="lineheader" style="margin-top: 10px;margin-left: 5px;">
+					<span>线路名称：</span>
+					<span id="lineName"></span> &nbsp;
+					<span id="lineId" style="display:none"></span>
+				</div>
+
+				<div id="linePoleBtnArea" style="max-height: 90px;overflow: auto;">
+
+				</div>
+			</div>
+
+			<div id="hangInfoTab" class="mui-control-content">
+				<div id="hanglineheader" style="margin-top: 10px;margin-left: 5px;">
+					<span>线路名称：</span>
+					<span id="hangLineName"></span> &nbsp;
+					<span>所属单位：</span>
+					<span id="belongUnit"></span>
+				</div>
+
+				<div id="hangPoleBtnArea" style="max-height: 90px;overflow: auto;">
+
+				</div>
+			</div>
+		</div>
+		
+		
+		<div id="shareArea" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">QQ</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">微信</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#shareArea"><b>取消</b></a>
+				</li>
+			</ul>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+		    
+		    //var CurrentPoleId = -1;
+		
+			mui.init();
+
+			function clearAllViews() {
+				$("#hangDtlul").find("li").remove();
+				$("#linePoleBtnArea").find("button").remove();
+				var linePoleBtnArea = document.getElementById("linePoleBtnArea");
+				linePoleBtnArea.innerHTML = "";
+			}
+
+			function clearHangPoleAreaViews() {
+				$("#hangPoleBtnArea").find("button").remove();
+				var hangPoleBtnArea = document.getElementById("hangPoleBtnArea");
+				hangPoleBtnArea.innerHTML = "";
+			}
+
+			function showInfo(info, hangDtl, lineInfo) {
+				clearAllViews();
+				//document.getElementById("pa").innerHTML = ag;
+				var jsonObj = eval('(' + info + ')');
+
+				var hangDtlObj = eval('(' + hangDtl + ')');
+				var lineInfoObj = eval('(' + lineInfo + ')');
+				//alert(lineInfoObj[0].LineId);
+
+				var linePoleBtnArea = document.getElementById("linePoleBtnArea");
+				$("#lineName").html(lineInfoObj[0].Name);
+				$("#lineId").html(lineInfoObj[0].LineId);
+				/*if(lineInfoObj.length == 0) {
+					$("#lineheader").hide();
+					$("#lineInfoTab").append("<p>没有找到相关数据</p>");
+				}*/
+				for(var i = 0; i < lineInfoObj.length; i++) {
+					//$("#lineheader").show();
+					var btn = document.createElement('button');
+					btn.className = 'mui-btn';
+					btn.typeName = 'button';
+					btn.innerHTML = "<div>" + lineInfoObj[i].PoleId + "</div><div style='display:none'>" + lineInfoObj[i].PoleId + "</div>";
+					btn.onclick = function() {
+						//alert(this.innerHTML.split("<")[this.innerHTML.split("<").length-2]);
+						var tempSplit = this.innerHTML.split("<")[this.innerHTML.split("<").length - 2];
+						var poleid = tempSplit.split(">")[tempSplit.split(">").length - 1];
+						var currentv = plus.webview.currentWebview(); //获取当前窗口的WebviewObject对象，即B  
+						var ownerv = currentv.opener();
+						ownerv.evalJS("mapCenterToPole('" + poleid + "')");
+						
+						setCurrentHangDtlAndHangLine(-1, -1);
+						setCurrentPoleId(poleid);
+
+					}
+					//$("#linePoleBtnArea").append("&nbsp;");
+					//alert(linePoleBtnArea.innerHTML);
+					linePoleBtnArea.appendChild(btn);
+				}
+
+				//alert(jsonObj.lineId);
+				$("#poleCode").html(jsonObj.code);
+				$("#poleHeight").html(jsonObj.height);
+				$("#poleStatus").html(jsonObj.status);
+				$("#poleType").html(jsonObj.type);
+
+				//alert(hangDtl);
+				var ul = document.getElementById("hangDtlul");
+				/*if(lineInfoObj.length == 0) {
+					$("#poleheader").hide();
+					$("#hangdtlarea").hide();
+					$("#poleInfoTab").append("<p>没有找到相关数据</p>");
+				}*/
+				for(var i = 0; i < hangDtlObj.length; i++) {
+					//$("#hangdtlarea").show();
+					//$("#poleheader").show();
+					var li = document.createElement('li');
+
+					li.className = 'mui-table-view-cell';
+					li.innerHTML = "<div style='float:left'>" + hangDtlObj[i].Name + "</div><div style='float:right'>" + hangDtlObj[i].UnitId + "</div><div style='display:none'>" + hangDtlObj[i].HangLineId + "</div><div style='display:none'>" + hangDtlObj[i].HangDtlId + "</div>";
+					li.onclick = function() {
+						//alert(this.innerHTML);
+						clearHangPoleAreaViews();
+						var tempArr = this.innerHTML.split("<");
+						var hangdtlid = tempArr[tempArr.length - 2].split(">")[tempArr[tempArr.length - 2].split(">").length - 1];
+						var hanglineid = tempArr[tempArr.length - 4].split(">")[tempArr[tempArr.length - 2].split(">").length - 1];
+
+						//alert(hanglineid);
+						mui.ajax('http://192.168.27.183:8080/SXDGServer/servlet/MapServlet?action=hangLineInfo', {
+							data: {
+								hanglineid: hanglineid,
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								//alert(data.length);
+								$("#hangLineName").html(tempArr[1].split(">")[tempArr[1].split(">").length - 1]);
+								$("#belongUnit").html(tempArr[3].split(">")[tempArr[3].split(">").length - 1]);
+								var hangPoleBtnArea = document.getElementById("hangPoleBtnArea");
+								/*if(lineInfoObj.length == 0) {
+									$("#hanglineheader").hide();
+									$("#hangInfoTab").append("<p>没有找到相关数据</p>");
+								}*/
+								for(var j = 0; j < data.length; j++) {
+									//$("#hanglineheader").show();
+									var btn = document.createElement('button');
+									btn.className = 'mui-btn';
+									btn.innerHTML = "<div>" + data[j].PoleId + "</div><div style='display:none'>" + data[j].PoleId + "</div>";
+									btn.onclick = function() {
+										//alert(this.innerHTML.split("<")[this.innerHTML.split("<").length-2]);
+										var tempSplit = this.innerHTML.split("<")[this.innerHTML.split("<").length - 2];
+										var poleid = tempSplit.split(">")[tempSplit.split(">").length - 1];
+										var currentv = plus.webview.currentWebview(); //获取当前窗口的WebviewObject对象，即B  
+										var ownerv = currentv.opener();
+										ownerv.evalJS("mapCenterToPole('" + poleid + "')");
+										
+										//transCurrentPoleId();
+										//alert("get currentPoleId: "+getCurrentPoleId());
+										setCurrentHangDtlAndHangLine(-1, -1);
+										setCurrentPoleId(poleid);
+									}
+									//$("#hangPoleBtnArea").append("&nbsp;");
+									hangPoleBtnArea.appendChild(btn);
+
+								}
+								setCurrentHangDtlAndHangLine(hangdtlid, hanglineid);
+							},
+							error: function(xhr, type, errorThrown) {
+								//异常处理；
+								mui.toast("服务器请求异常！");
+							}
+						});
+						
+						
+						$("#poleInfoTab").hide();
+						$("#lineInfoTab").hide();
+						$("#hangInfoTab").show();
+						
+						var lineInfoBtn = document.getElementById('lineInfoBtn');
+						lineInfoBtn.className = 'mui-tab-item';
+						var poleInfoBtn = document.getElementById('poleInfoBtn');
+						poleInfoBtn.className = 'mui-tab-item';
+						var hanglineBtn = document.getElementById('hangLineBtn');
+						hanglineBtn.className = 'mui-tab-item mui-active';
+						//document.getElementById("hangLineBtn").click();
+
+					}
+					ul.appendChild(li);
+				}
+
+			}
+
+			function setCurrentPoleId(poleid) {
+				var mv = plus.webview.currentWebview();
+				var ownerv = mv.opener();
+				ownerv.evalJS("setCurrentPoleId('" + poleid + "')");
+			}
+
+			function setCurrentHangDtlAndHangLine(hangdtlid, hanglineid) {
+				var mv = plus.webview.currentWebview();
+				var ownerv = mv.opener();
+				ownerv.evalJS("setCurrentHangDtlAndHangLine('" + hangdtlid + "','" + hanglineid + "')");
+			}
+			
+			function showPoleInfoTab(){
+				$("#lineInfoTab").hide();
+				$("#hangInfoTab").hide();
+				$("#poleInfoTab").show();
+				return false;
+			}
+			
+			function showLineInfoTab(){
+				$("#hangInfoTab").hide();
+				$("#poleInfoTab").hide();
+				$("#lineInfoTab").show();
+				return false;
+			}
+			
+			function showHangInfoTab(){
+				$("#poleInfoTab").hide();
+				$("#lineInfoTab").hide();
+				$("#hangInfoTab").show();
+				return false;
+			}
+
+		</script>
+	</body>
+
+</html>

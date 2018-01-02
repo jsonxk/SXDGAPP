@@ -1,0 +1,146 @@
+<!--<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+
+        <link rel="stylesheet" href="./css/common.css" type="text/css" charset="utf-8" />
+		<style type="text/css">
+			html,
+			body {
+				overflow: hidden;
+				text-decoration: none;
+				display: block;
+				text-align: center;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-input-row mui-search">
+			<input type="search" class="mui-input-clear" placeholder="线路、线杆、地点">
+		</div>
+        
+        <Button onclick="locateUser()" type="button" class="mui-btn" style="margin-top: -12px;">当前位置</Button>
+        <Button onclick="" type="button" class="mui-btn" style="margin-top: -12px;">添加线杆</Button>
+        <Button onclick="changeMapTypeToNormal()" type="button" class="mui-btn" style="margin-top: -12px;">街道地图</Button>
+        <Button onclick="changeMapTypeToSatelite()" type="button" class="mui-btn" style="margin-top: -12px;">卫星地图</Button>
+
+         
+		
+	</body>
+
+</html>-->
+
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>Hello H5+</title>
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" type="text/css" charset="utf-8" />
+		<style type="text/css">
+			html,
+			body {
+				overflow: hidden;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-input-row mui-search">
+			<input id="searchInput" type="search" class="mui-input-clear" placeholder="线路、线杆" onkeyup="enterSearch(event)">
+		</div>
+
+		<Button onclick="locateUser()" type="button" class="mui-btn" style="margin-top: -12px;width:83px;margin-left:0px">当前位置</Button>
+		<Button id="relocateBtn" onclick="poleRelocate()" type="button" class="mui-btn" style="width:83px;margin-top: -12px;margin-left:0px">线杆修正</Button>
+		<Button onclick="addLine()" type="button" class="mui-btn" style="width:83px;margin-top: -12px;margin-left:0px">添加线路</Button>
+		<Button id="addPoleBtn" onclick="addPole()" type="button" class="mui-btn" style="width:83px;margin-top: -12px;margin-left:0px">添加线杆</Button>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			//mui.init();
+
+			function enterSearch(e) {
+				if(e.keyCode == 13) {
+					$("#searchInput").blur();
+					var mv = plus.webview.currentWebview();
+					var ownerv = mv.opener();
+					ownerv.evalJS("searchInput('"+$('#searchInput').val()+"')");
+				}
+			}
+
+			function locateUser() {
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				mapv.evalJS("userLocation()");
+			}
+
+			function poleRelocate() {
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				if(relocateBtn.innerHTML == "线杆修正") {
+					mapv.evalJS("markerDraggable(true)");
+					var btn = document.getElementById("relocateBtn");
+					btn.innerHTML = "修正完成";
+					btn.className = 'mui-btn-primary';
+				} else {
+					mapv.evalJS("markerDraggable(false)");
+					var btn = document.getElementById("relocateBtn");
+					btn.innerHTML = "线杆修正";
+					btn.className = 'mui-btn';
+				}
+
+			}
+
+			function changeMapTypeToNormal() {
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				mapv.evalJS("setMapTypeNormal()");
+			}
+
+			function changeMapTypeToSatelite() {
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				mapv.evalJS("setMapTypeSatelite()");
+			}
+			
+			function addLine(){
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				mapv.evalJS("addLine()");
+			}
+			
+			function addPole(){
+				var maptoolsv = plus.webview.currentWebview();
+				var mapv = maptoolsv.opener();
+				if(addPoleBtn.innerHTML == "添加线杆") {
+					mapv.evalJS("addPole()");
+					mapv.evalJS("showConfirmBtn()");
+					var btn = document.getElementById("addPoleBtn");
+					btn.innerHTML = "停止添加";
+					btn.className = 'mui-btn-primary';
+				} else {
+					mapv.evalJS("stopAddNewPole()");
+					mapv.evalJS("hideConfirmBtn()");
+					var btn = document.getElementById("addPoleBtn");
+					btn.innerHTML = "添加线杆";
+					btn.className = 'mui-btn';
+				}
+			}
+		</script>
+	</body>
+
+</html>

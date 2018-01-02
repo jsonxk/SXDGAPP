@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" type="text/css" charset="utf-8" />
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+		<style>
+			html,
+			body {
+				/*
+				
+				left: 0;
+				top: 0;
+				position: fixed;*/
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--<div class="mui-content">-->
+		<div class="mui-card" style="z-index: 600;box-shadow: 0 0 200px 50px #a09e9e;">
+			<h4 style="margin-top:10px;margin-left: 10px;color: #2187E7;">添加线路</h4>
+			<hr>
+			<form class="mui-input-group" style="margin-bottom: 10px;">
+
+				<div class="mui-input-row">
+					<label>运营单位<span style="color:red;"> *</span></label>
+					<input id="showUnitPicker" type="text" class="mui-input-clear" placeholder="请选择运营单位" style="width:190px;float:left">
+					<input class="showUnitPicker" style="display: none;"/>
+					<span class="mui-icon mui-icon-arrowdown mui-active" style="float:left;margin-top: 6px;"></span>
+					<!--<button id='showUnitPicker' class="mui-btn" type='button' >请选择运营单位</button>-->
+				</div>
+				<!--<div class="mui-input-row">
+					<label>线路编号<span style="color:red;"> *</span></label>
+					<input id="lineCode" type="text" class="mui-input-clear" placeholder="请输入线路编号">
+				</div>-->
+
+				<div class="mui-input-row">
+					<label>线路名称<span style="color:red;"> *</span></label>
+					<input id="lineName" type="text" class="mui-input-clear" placeholder="请输入线路名称">
+				</div>
+				<!--<div class="mui-input-row">
+					<label>起始线杆</label>
+					<input id="startPole" type="text" class="mui-input-clear" placeholder="请输入起始线杆">
+				</div>
+				<div class="mui-input-row">
+					<label>终止线杆</label>
+					<input id="endPole" type="text" class="mui-input-clear" placeholder="请输入终止线杆">
+				</div>-->
+				<div class="mui-input-row">
+					<label>线路长度</label>
+					<input id="lineLength" type="text" class="mui-input-clear" placeholder="请输入线路长度">
+				</div>
+				<div class="mui-input-row">
+					<label>创建时间</label>
+					<input id="lineTime" type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<label>线路状态<span style="color:red;"> *</span></label>
+					<input id="lineStatus" type="text" class="mui-input-clear" placeholder="请选择线路状态" style="width:190px;float:left">
+					<input class="lineStatus" style="display: none;"/>
+					<span class="mui-icon mui-icon-arrowdown mui-active" style="float:left;margin-top: 6px;"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>线路类型<span style="color:red;"> *</span></label>
+					<input id="lineType" type="text" class="mui-input-clear" placeholder="请选择线路类型" style="width:190px;float:left">
+					<input class="lineType" style="display: none;"/>
+					<span class="mui-icon mui-icon-arrowdown mui-active" style="float:left;margin-top: 6px;"></span>
+				</div>
+				<!--<div class="mui-input-row">
+					<label>备注</label>
+					<input id="lineMemo" type="text" class="mui-input-clear" placeholder="请输入备注信息">
+				</div>-->
+				<p style="margin-top:10px;margin-left: 10px;">带<span style="color:red;">*</span>标记为必填(必选)项</p>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-danger" onclick="CancelAdd()">取消</button>
+					<button type="button" class="mui-btn mui-btn-primary" onclick="UploadPole()">保存</button>
+				</div>
+			</form>
+		</div>
+
+		<!--</div>-->
+
+		<script src="js/mui.min.js"></script>
+		<script src="./js/mui.picker.js"></script>
+		<script src="./js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var LineStatusPicker = new mui.PopPicker();
+			var LineTypePicker = new mui.PopPicker();
+			var UnitPicker = new mui.PopPicker();
+
+			var lineStatusPickerData = new Array();
+			var lineTypePickerData = new Array();
+			var unitPickerData = new Array();
+
+			var lineStatusPickerresult = document.getElementById('lineStatus');
+			var lineTypePickerresult = document.getElementById('lineType');
+			var UnitPickerresult = document.getElementById('showUnitPicker');
+
+			var urlJson;
+			$.getJSON("js/properties.json", function(data) {
+				urlJson = data[0].url;
+				mui.plusReady(function() {
+					LineTypeInfo("线路类别");
+					LineTypeInfo("线路状态");
+					SelectAllUnit("正常");
+					$("#lineTime").val(NowDate());
+				});
+			});
+			/**
+			 * 线杆类型状态
+			 * @param {Object} typename
+			 */
+			function LineTypeInfo(typename) {
+				mui.ajax(urlJson + "HangLine/selectHangStatus.spring", {
+					data: {
+						typename: typename,
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						switch(typename) {
+							case("线路状态"):
+								lineStatusPickerresult.value = data[0].item;
+								$(".lineStatus").val(data[0].dicitemid);
+								for(var i = 0; i < data.length; i++) {
+									var jsonobj = {
+										value: data[i].dicitemid,
+										text: data[i].item,
+									}
+									lineStatusPickerData.push(jsonobj);
+								}
+								LineStatusPicker.setData(lineStatusPickerData);
+								LineStatusPicker.pickers[0].setSelectedIndex(0, 1000);
+								lineStatusPickerresult.addEventListener('tap', function(event) {
+									LineStatusPicker.show(function(item) {
+										lineStatusPickerresult.value = item[0].text;
+										$(".poleStatus").val(item[0].value);
+									})
+								}, false);
+								break;
+							case("线路类别"):
+								lineTypePickerresult.value = data[0].item;
+								$(".lineType").val(data[0].dicitemid);
+								for(var i = 0; i < data.length; i++) {
+									var jsonobj = {
+										value: data[i].dicitemid,
+										text: data[i].item,
+									}
+									lineTypePickerData.push(jsonobj);
+								}
+								LineTypePicker.setData(lineTypePickerData);
+								LineTypePicker.pickers[0].setSelectedIndex(0, 1000);
+								lineTypePickerresult.addEventListener('tap', function(event) {
+									LineTypePicker.show(function(item) {
+										lineTypePickerresult.value = item[0].text;
+										$(".poleType").val(item[0].value);
+										//alert($(".poleType").val());
+									})
+								}, false);
+								break;
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						mui.toast("服务器请求异常！");
+					}
+				});
+			}
+			/**
+			 * 查找所有正常单位
+			 * @param {Object} status
+			 */
+			function SelectAllUnit(status) {
+				mui.ajax(urlJson + "SQXXGL/selectallunit.spring", {
+					data: {
+						status: status,
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						UnitPickerresult.value = data[0].unitname;
+						$(".showUnitPicker").val(data[0].unitid);
+						for(var i = 0; i < data.length; i++) {
+							var jsonobj = {
+								value: data[i].unitid,
+								text: data[i].unitname,
+							}
+							unitPickerData.push(jsonobj);
+						}
+						UnitPicker.setData(unitPickerData);
+						UnitPicker.pickers[0].setSelectedIndex(0, 1000);
+						UnitPickerresult.addEventListener('tap', function(event) {
+							UnitPicker.show(function(item) {
+								UnitPickerresult.value = item[0].text;
+								$("#showUnitPicker").val(item[0].value);
+							})
+						}, false);
+					}
+				});
+			}
+				/**
+			 * 取消添加
+			 */
+			function CancelAdd() {
+				var btnArray = ['是', '否'];
+				mui.confirm('当前操作会清除正在输入的数据，您确认要执行吗？', '提示', btnArray, function(e) {
+					if(e.index == 0) {
+						var mv = plus.webview.currentWebview();
+						var ownerv = mv.opener();
+						ownerv.evalJS("continueDrag()");
+						plus.webview.close(mv);
+					} else {
+
+					}
+				});
+
+			}
+			/**
+			 * 添加线杆信息
+			 */
+			function UploadPole() {
+				insertNewLine();
+				setTimeout(function () {
+					var mv = plus.webview.currentWebview();
+					//var ownerv = mv.opener();
+					//ownerv.evalJS("continueDrag()");
+					plus.webview.close(mv);
+				  }, 1000);
+			}
+			/**
+		 * 新建新的电力线路
+		 */
+		function insertNewLine() {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/insertLineInfo.spring",
+				data: JSON.stringify(InsertNewLineInfo()),
+				datatype: "json",
+				contentType: "application/json",
+				success: function(data) {
+					mui.toast("添加线路成功", {
+						duration: 1000,
+						type: 'div'
+					});
+				},
+			});
+		}
+		/**
+		 * 新建电力线路的信息
+		 */
+		function InsertNewLineInfo() {
+			var newLineArr = {};
+			newLineArr["unitid"] = Number($(".showUnitPicker").val());
+			newLineArr["name"] = $("#lineName").val();
+			newLineArr["linelength"] = $("#lineLength").val();
+			newLineArr["status"] = Number($(".lineStatus").val());
+			newLineArr["type"] = Number($(".lineType").val());
+			newLineArr["timeString"] = $("#lineTime").val();
+			return newLineArr;
+		}
+		/*
+		 * 获取时间
+		 */
+		function NowDate() {
+			var d = new Date();
+			var year = d.getFullYear();
+			var mon = d.getMonth() + 1;
+			var day = d.getDate();
+			var hour = d.getHours();
+			var min = d.getMinutes();
+			var second = d.getSeconds();
+			return year + "-" + (mon < 10 ? ("0" + mon) : mon) + "-" + (day < 10 ? ("0" + day) : day) + " " + hour + ":" + min + ":" + second;
+		}
+		</script>
+	</body>
+
+</html>

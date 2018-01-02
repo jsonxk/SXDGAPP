@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			#buttondiv:-moz-placeholder {
+				/* Mozilla Firefox 4 to 18 */
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			#buttondiv::-moz-placeholder {
+				/* Mozilla Firefox 19+ */
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			#buttondiv input:-ms-input-placeholder {
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			#buttondiv input::-webkit-input-placeholder {
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.buttonid {
+				width: 20px;
+				height: 20px;
+				border: 1px solid #FFFFFF;
+				border-radius: 50%;
+				background-color: #6641E2;
+			}
+			
+			.centerDiv {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				margin: 4px;
+				background-color: #E90000;
+			}
+			
+			.markerid {
+				width: 14px;
+				height: 14px;
+				border: 1px solid #E90000;
+				border-radius: 50%;
+				background-color: #2AC845;
+			}
+			
+			.MarkercenterDiv {
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				margin: 3px;
+				background-color: #007AFF;
+			}
+			
+			#buttondiv {
+				height: 80px;
+				position: absolute;
+				float: left;
+				width: 80%;
+				margin: 5px 0 0 10%;
+			}
+			
+			#Searchinput {
+				background-color: rgba(0, 0, 0, 0.3);
+				border-radius: 10px;
+				color: #FFFFFF;
+			}
+			
+			#buttonbtn {
+				margin: 45px 0 0 9%;
+				float: left;
+			}
+			
+			#buttonbtn input {
+				font-size: 11px;
+			}
+			
+			#markerInfo button {
+				font-size: 8px;
+			}
+			
+			.mui-backdrop {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 998;
+				background-color: rgba(0, 0, 0, 0.3);
+			}
+			
+			#AddpoleDiv,
+			#AddLineDiv {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: none;
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			
+			#poleDivChild {
+				position: absolute;
+				width: 76%;
+				height: 82%;
+				margin: 10% 12%;
+				background-color: #FFFFFF;
+				border-radius: 8px;
+			}
+			
+			#AddLineDivChild {
+				position: absolute;
+				width: 70%;
+				height: 58%;
+				margin: 25% 15%;
+				background-color: #FFFFFF;
+				border-radius: 8px;
+			}
+			
+			#Poletitle,
+			#Linetitle {
+				width: 100%;
+				height: 10%;
+				position: absolute;
+			}
+			
+			#Poletitle span,
+			#Linetitle span {
+				display: block;
+				margin: 5% 36%;
+			}
+			
+			#polecontent {
+				height: 78%;
+				margin-top: 15%;
+				overflow-y: scroll;
+			}
+			
+			#linecontent {
+				height: 75%;
+				margin-top: 15%;
+				background-color: #6D6D72;
+			}
+			
+			#PoleBottom,
+			#LineBottom {
+				bottom: 0px;
+				width: 100%;
+				height: 10%;
+				position: absolute;
+			}
+			
+			#PoleBottom #BottomAddBtn,
+			#LineBottom #BottomLineBtn {
+				font-size: 8px;
+				margin: 0 0 0 55%;
+			}
+			
+			#PoleBottom #CancelBtn,
+			#LineBottom #CancelLineBtn {
+				font-size: 8px;
+				margin: 0 0 0 5%;
+			}
+			
+			#addPoleInfo {
+				background-color: #EEEEEE;
+				border: 1px solid #ACACB4;
+				border-radius: 5px;
+			}
+			
+			#AddLocalBtn {
+				position: absolute;
+				left: 10%;
+				top: 15%;
+				display: none;
+			}
+			
+			#PoleOfLength,
+			#PoleOfStatus,
+			#PoleOfTime,
+			#PoleOfLng,
+			#PoleOfLat,
+			#PoleOfType,
+			#PoleOfUnit,
+			.LineInfo1,
+			.PoleOfCode1,
+			.PoleOfName1 {
+				height: 30px;
+				width: 100%;
+				margin-top: 1%;
+			}
+			
+			#LineOfName {
+				height: 30px;
+				width: 100%;
+			}
+			
+			#LineOfLength,
+			#LineOfUnit,
+			#LineOfStatus,
+			#LineOfType,
+			#LineOfCtime {
+				height: 30px;
+				width: 100%;
+				margin-top: 3%;
+			}
+			
+			.LineOfPole1,
+			.LineOfPole2,
+			.LineOfPole3 {
+				margin: 5px 0 0 0;
+				background-color: #EEEEEE;
+				border: 1px solid #ACACB4;
+				border-radius: 5px;
+			}
+			
+			#CancelAddPole {
+				position: absolute;
+				left: 9%;
+				display: none;
+				background-color: #8A6DE9;
+				color: #FFFFFF;
+				width: 18%;
+			}
+			
+			#AddPole {
+				position: absolute;
+				left: 10%;
+				width: 18%;
+			}
+			
+			#AddLineMap {
+				position: absolute;
+				left: 30%;
+				width: 18%;
+			}
+			
+			#DelPoleMap {
+				position: absolute;
+				left: 50%;
+				width: 18%;
+			}
+			
+			#ClosePoleMap {
+				position: absolute;
+				left: 50%;
+				display: none;
+				background-color: #8A6DE9;
+				color: #FFFFFF;
+				width: 18%;
+			}
+			
+			#LocalMapPosition {
+				position: absolute;
+				left: 70%;
+				width: 18%;
+			}
+			
+			#addPoleInfo label,
+			.LineOfPole1 label,
+			.LineOfPole2 label,
+			.LineOfPole3 label {
+				display: block;
+				font-size: 13px;
+				float: left;
+				line-height: 30px;
+				margin-left: 5%;
+			}
+			
+			#linecontent label {
+				display: block;
+				font-size: 13px;
+				float: left;
+				line-height: 30px;
+				margin-left: 2%;
+				color: #FFFFFF;
+			}
+			
+			#addPoleInfo input,
+			.LineOfPole1 input,
+			.LineOfPole2 input,
+			.LineOfPole3 input,
+			#linecontent input {
+				display: block;
+				float: left;
+				width: 70%;
+				font-size: 13px;
+			}
+			
+			#PoleOfType select,
+			#PoleOfUnit select,
+			#PoleOfStatus select,
+			.LineInfo1 select,
+			#LineOfUnit select,
+			#LineOfStatus select,
+			#LineOfType select {
+				display: block;
+				float: left;
+				width: 70%;
+				font-size: 13px;
+				border: 1px solid black;
+				background-color: #CCCCCC;
+			}
+			
+			#ExtraLineBtn {
+				margin-top: 5px;
+			}
+			
+			#ExtraLineBtn img {
+				width: 30px;
+				height: 30px;
+			}
+			
+			#ExtraLineBtn span {
+				font-size: 13px;
+			}
+			
+			.DelImg {
+				width: 30px;
+				height: 30px;
+				margin-left: 85%;
+			}
+			
+			.DelImg img {
+				width: 30px;
+				height: 30px;
+			}
+			
+			.mui-table-view {
+				width: 260px;
+			}
+		</style>
+		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+		<script src="http://webapi.amap.com/maps?v=1.4.1&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.MouseTool"></script>
+		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	</head>
+
+	<body>
+		<div class="mui-content" id="mui-content">
+			<div id="container" style="height: 100%;">
+			</div>
+			<div id="buttondiv">
+				<input type="text" value="" id="Searchinput" placeholder="线路,线杆查找">
+			</div>
+			<div id="buttonbtn">
+				<input type="button" class="button" value="添加线杆" id="AddPole" />
+				<input type="button" class="button" value="取消添加" id="CancelAddPole" />
+				<input type="button" class="button" value="添加线路" id="AddLineMap" />
+				<input type="button" class="button" value="编辑线杆" id="DelPoleMap" />
+				<input type="button" class="button" value="关闭编辑" id="ClosePoleMap" />
+				<input type="button" class="button" value="当前位置" id="LocalMapPosition" onclick='PositionFuc()' />
+				<input type="button" class="button" value="在当前位置添加" id="AddLocalBtn" />
+			</div>
+			<!--
+            	作者：673542123@qq.com
+            	时间：2017-11-30
+            	描述：添加线杆弹出框
+            -->
+			<div id="AddpoleDiv">
+				<div id="poleDivChild">
+					<div id="Poletitle">
+						<span>添加线杆</span>
+					</div>
+					<div id="polecontent" class="mui-scroll-wrapper">
+						<!--
+                        	作者：673542123@qq.com
+                        	时间：2017-11-29
+                        	描述：添加内容主要区域
+                        -->
+						<div class="mui-scroll">
+							<!--
+                            	作者：673542123@qq.com
+                            	时间：2017-11-29
+                            	描述：添加的线杆信息
+                            -->
+							<div id="addPoleInfo">
+								<div id="PoleOfLength">
+									<label for="PoleLength">线杆高度:</label>
+									<input type="text" id="PoleLength" style="height: 100%;margin: 0;padding: 0;" placeholder="请输入线杆高度" />
+								</div>
+								<div id="PoleOfStatus">
+									<label for="PoleOfStatus">线杆状态:</label>
+									<select class="PoleOfStatus" style="height: 100%;margin: 0;padding: 0;">
+									</select>
+								</div>
+								<div id="PoleOfTime">
+									<label for="PoleOfTime">创建时间:</label>
+									<input type="text" class="PoleOfTime" style="height: 100%;margin: 0;padding: 0;" readonly/>
+								</div>
+								<div id="PoleOfLng">
+									<label for="PoleOfLng">经度&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+									<input type="text" class="PoleOfLng" style="height: 100%;margin: 0;padding: 0;" />
+								</div>
+								<div id="PoleOfLat">
+									<label for="PoleOfLat">纬度&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+									<input type="text" class="PoleOfLat" style="height: 100%;margin: 0;padding: 0;" />
+								</div>
+								<div id="PoleOfType">
+									<label for="PoleOfType">线杆类型:</label>
+									<select class="PoleOfType" style="height: 100%;margin: 0;padding: 0;">
+									</select>
+								</div>
+								<div id="PoleOfUnit">
+									<label for="PoleOfUnit">所属单位:</label>
+									<select class="PoleOfUnit" style="height: 100%;margin: 0;padding: 0;border: solid 1px #000;">
+									</select>
+								</div>
+							</div>
+							<!--
+                            	作者：673542123@qq.com
+                            	时间：2017-11-29
+                            	描述：添加额外线路按钮
+                            -->
+							<div id="ExtraLineBtn">
+								<span id="AddBtn"><img src="images/add.png"/></span>
+								<span>点击左侧按钮可增加额外线路</span>
+							</div>
+							<!--可以添加的线杆可以属于那些线路-->
+							<div class="LineOfPole1">
+								<div class="LineInfo1">
+									<label for="LineInfo1">所属线路:</label>
+									<select class="LineInfo" style="height: 100%;margin: 0;padding: 0;">
+									</select>
+								</div>
+								<div class="PoleOfCode1">
+									<label for="PoleOfCode">线杆编号:</label>
+									<input type="text" class="PoleOfCode" style="height: 100%;margin: 0;padding: 0;" placeholder="请输入线杆编号" />
+								</div>
+								<div class="PoleOfName1">
+									<label for="PoleOfName">线杆名称:</label>
+									<input type="text" class="PoleOfName" style="height: 100%;margin: 0;padding: 0;" placeholder="请输入线杆名称" readonly/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="PoleBottom">
+						<input type="button" value="添加" id="BottomAddBtn" />
+						<input type="button" value="取消" id="CancelBtn" />
+					</div>
+				</div>
+			</div>
+			<!--
+            	作者：673542123@qq.com
+            	时间：2017-11-30
+            	描述：添加线路弹出框
+           -->
+			<div id="AddLineDiv">
+				<div id="AddLineDivChild">
+					<div id="Linetitle">
+						<span>添加线路</span>
+					</div>
+					<div id="linecontent" class="mui-scroll-wrapper">
+						<div class='mui-scroll'>
+							<div id="LineOfName">
+								<label for="LineOfName">线路名称:</label>
+								<input type="text" class="LineOfName" style="height: 100%;margin: 0;padding: 0;" placeholder="请输入线路名称" />
+							</div>
+							<div id="LineOfLength">
+								<label for="LineOfLength">线路长度:</label>
+								<input type="text" class="LineOfLength" style="height: 100%;margin: 0;padding: 0;" placeholder="请输入线路长度" />
+							</div>
+							<div id="LineOfUnit">
+								<label for="LineOfUnit">单位名称:</label>
+								<select class="LineOfUnit" style="height: 100%;margin: 0;padding: 0;">
+								</select>
+							</div>
+							<div id="LineOfCtime">
+								<label for="LineOfCtime">新建时间:</label>
+								<input type="text" class="LineOfCtime" style="height: 100%;margin: 0;padding: 0;" readonly/>
+							</div>
+							<div id="LineOfStatus">
+								<label for="LineOfStatus">线路状态:</label>
+								<select class="LineOfStatus" style="height: 100%;margin: 0;padding: 0;">
+								</select>
+							</div>
+							<div id="LineOfType">
+								<label for="LineOfType">线路类型:</label>
+								<select class="LineOfType" style="height: 100%;margin: 0;padding: 0;">
+								</select>
+							</div>
+						</div>
+					</div>
+					<div id="LineBottom">
+						<input type="button" value="添加" id="BottomLineBtn" />
+						<input type="button" value="取消" id="CancelLineBtn" />
+					</div>
+				</div>
+			</div>
+			<!--
+            	作者：673542123@qq.com
+            	时间：2017-12-02
+            	描述：mui popover
+            -->
+			<!--<div style="position: absolute;top:50%; width: 100%;" id="popoverDiv">
+				
+			</div>
+			<div id="popover" class="mui-popover">
+			   	
+			</div>-->
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		mui(".mui-scroll-wrapper").scroll({
+			indicators: true,
+		});
+		mui.plusReady(function(){
+		});
+		/**
+		 *线杆对象 
+		 */
+		var PoleInit = function() {};
+		PoleInit.prototype = {
+			/**
+			 * 线杆类型状态
+			 * @param {Object} typename
+			 */
+			PoleTypeInfo: function(typename) {
+				poleTypeInfo(typename);
+			},
+			/**
+			 * 单位
+			 */
+			PoleUnitInfo: function(status) {
+				poleUnitInfo(status);
+			},
+			SelectLineInfo: function(index) {
+				selectLineInfo(index);
+			},
+			/**
+			 * 添加线杆信息
+			 */
+			InsertAddPole: function() {
+				insertAddPole();
+			},
+			/**
+			 * 添加线杆所属电力线路信息
+			 *index poleid{序号 线杆id}
+			 */
+			InsertAddLine: function(index, poleid) {
+				insertAddLine(index, poleid);
+			},
+			/**
+			 * 新建添加新的电力线路
+			 */
+			InsertNewLine: function() {
+				insertNewLine();
+			},
+			/**
+			 * 查找所有线杆信息
+			 */
+			SelectAllPoleInfo: function() {
+				selectAllPoleInfo();
+			},
+			/**
+			 * 修改线杆位置
+			 * @param {Object} poleid
+			 */
+			ModifyPolePosition: function(poleid, lng, lat) {
+				modifyPolePosition(poleid, lng, lat);
+			},
+			/**
+			 * 根据poleid查询所属的电力线路信息
+			 * @param {Object} poleid
+			 */
+			SelectAllLineByPoleid: function(thismarker, thisevent) {
+				selectAllLineByPoleid(thismarker, thisevent);
+			},
+			/**
+			 * 根据poleid查找pole信息
+			 * @param {Object} poleid
+			 */
+			SelectPoleInfoBypoleId: function(poleid) {
+				selectPoleInfoBypoleId(poleid);
+			},
+			/**
+			 * 根据poleid查找搭挂线路
+			 */
+			SelectHangLineByPoleid:function(poleid){
+				selectHangLineByPoleid(poleid);
+			}
+		}
+		var poleinit = new PoleInit();
+		/**
+		 * 加载json文件中的地址
+		 */
+		var urlJson;
+		$.getJSON("js/properties.json", function(data) {
+			urlJson = data[0].url;
+			//alert(urlJson);
+			poleinit.PoleTypeInfo("线杆类别");
+			poleinit.PoleTypeInfo("线杆状态");
+			poleinit.PoleTypeInfo("线路类别");
+			poleinit.PoleTypeInfo("线路状态");
+			poleinit.PoleUnitInfo("正常");
+			poleinit.SelectLineInfo(1);
+			poleinit.SelectAllPoleInfo();
+		});
+		$(function() {
+			$(".LineOfPole1 .PoleOfCode").bind('input porpertychange', function() {
+				$(".LineOfPole1 .PoleOfName").val($(this).val());
+			});
+		});
+		/**
+		 * 查找类型状态
+		 * @param {Object} typename
+		 */
+		function poleTypeInfo(typename) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "HangLine/selectHangStatus.spring",
+				data: {
+					typename: typename,
+				},
+				datatype: "json",
+				success: function(data) {
+					switch(typename) {
+						case("线杆类别"):
+							for(var i = 0; i < data.length; i++) {
+								$(".PoleOfType").append("<option value=" + data[i].dicitemid + ">" + data[i].item + "</option>");
+							};
+							break;
+						case("线杆状态"):
+							for(var i = 0; i < data.length; i++) {
+								$(".PoleOfStatus").append("<option value=" + data[i].dicitemid + ">" + data[i].item + "</option>");
+							};
+							break;
+						case("线路状态"):
+							for(var i = 0; i < data.length; i++) {
+								$(".LineOfStatus").append("<option value=" + data[i].dicitemid + ">" + data[i].item + "</option>");
+							};
+							break;
+						case("线路类别"):
+							for(var i = 0; i < data.length; i++) {
+								$(".LineOfType").append("<option value=" + data[i].dicitemid + ">" + data[i].item + "</option>");
+							};
+							break;
+					}
+				},
+			});
+		}
+		/**
+		 * 正常状态的单位
+		 * @param {Object} status
+		 */
+		function poleUnitInfo(status) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "SQXXGL/selectallunit.spring",
+				data: {
+					status: status,
+				},
+				datatype: "json",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$(".PoleOfUnit").append("<option value=" + data[i].unitid + ">" + data[i].unitname + "</option>");
+						$(".LineOfUnit").append("<option value=" + data[i].unitid + ">" + data[i].unitname + "</option>");
+					}
+				},
+			});
+		}
+		/**
+		 * 查找线路信息
+		 */
+		function selectLineInfo(index) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/selectAllLineName.spring",
+				datatype: "json",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$(".LineOfPole" + index + " " + ".LineInfo").append("<option value=" + data[i].lineid + ">" + data[i].name + "</option>");
+					}
+				},
+			});
+		}
+		/**
+		 * map上添加线杆
+		 */
+		var locationMarker;
+		$("#AddPole").click(function() {
+			/**
+			 * modal
+			 */
+			$("#AddLocalBtn").css("display", "block");
+			$("#CancelAddPole").css("display", "block");
+			$("#AddPole").css("display", "none");
+			AddMarker(locationMarker);
+		})
+		/**
+		 * 地图上点击添加线路
+		 */
+		$("#AddLineMap").click(function() {
+			//$("#AddLineDiv").css("display", "block");
+			//$(".LineOfCtime").val(NowDate());
+			addLineWebView();
+		})
+		/**
+		 * map上取消添加
+		 */
+		$("#CancelAddPole").click(function() {
+			$("#CancelAddPole").css("display", "none");
+			$("#AddPole").css("display", "block");
+			$("#AddLocalBtn").css("display", "none");
+			map.remove(marker);
+		});
+		/**
+		 * 在当前位置添加
+		 */
+		$("#AddLocalBtn").click(function() {
+			/**
+			 * 显示modal
+			 */
+			/*$("#AddpoleDiv").css("display", "block");
+			$("#AddpoleDiv").css("z-index", 1000);
+			ExtralineNum = 1;
+			$(".LineOfPole2").remove();
+			$(".LineOfPole3").remove();
+			$(".mui-scroll input").val("");
+			$(".PoleOfTime").val(NowDate());*/
+			/**
+			 * 添加线杆时定位信息
+			 */
+			/*$(".PoleOfLng").val(locationMarker[0]);
+			$(".PoleOfLat").val(locationMarker[1]);*/
+			addPoleWebView(locationMarker[0],locationMarker[1]);
+		});
+		/**
+		 * modal添加按钮
+		 */
+		$("#BottomAddBtn").click(function() {
+			//mask.close();
+			$("#AddLocalBtn").css("display", "none");
+			$("#AddpoleDiv").css("display", "none");
+			$("#AddPole").css("display", "block");
+			$("#CancelAddPole").css("display", "none");
+			map.remove(marker);
+			/**
+			 * ajax请求添加数据到数据库
+			 */
+			poleinit.InsertAddPole();
+		});
+		/**
+		 * modal取消按钮
+		 */
+		$("#CancelBtn").click(function() {
+			//$("#AddLocalBtn").css("display","none");
+			$("#AddpoleDiv").css("display", "none");
+		});
+		/**
+		 * 添加额外线杆
+		 */
+		//添加额外线杆数量<=3
+		var ExtralineNum = 1;
+		$("#AddBtn").click(function() {
+			if(ExtralineNum >= 3) {
+				ExtralineNum = 3;
+				alert("最多添加三个！");
+			} else {
+				ExtralineNum++;
+				$(".mui-scroll").append("<div class='LineOfPole" + ExtralineNum + "'>" +
+					"<span class='DelImg' onclick='delDiv(this)'><img src='images/jian.png'/></span>" +
+					"<div class='LineInfo1'>" +
+					"	<label for='LineInfo1'>所属单位:</label>" +
+					"	<select class='LineInfo' style='height: 100%;margin: 0;padding: 0;'>" +
+					"	</select>" +
+					"</div>" +
+					"<div class='PoleOfCode1'>" +
+					"	<label for='PoleOfCode'>线杆编号:</label>" +
+					"	<input type='text' class='PoleOfCode' style='height: 100%;margin: 0;padding: 0;' placeholder='请输入线杆编号'/>" +
+					"</div>" +
+					"<div class='PoleOfName1'>" +
+					"	<label for='PoleOfName'>线杆名称:</label>" +
+					"	<input type='text' class='PoleOfName' style='height: 100%;margin: 0;padding: 0;' placeholder='请输入线杆名称' readonly/>" +
+					"</div>" +
+					"</div>");
+				poleinit.SelectLineInfo(ExtralineNum);
+			}
+			$(".LineOfPole2 .PoleOfCode").bind('input porpertychange', function() {
+				$(".LineOfPole2 .PoleOfName").val($(this).val());
+			});
+			$(".LineOfPole3 .PoleOfCode").bind('input porpertychange', function() {
+				$(".LineOfPole3 .PoleOfName").val($(this).val());
+			});
+		});
+		/**
+		 * 减少额外线杆
+		 */
+		function delDiv(thisdiv) {
+			ExtralineNum--;
+			$(thisdiv).parent().remove();
+			$(".LineOfPole3").removeClass("LineOfPole3").addClass("LineOfPole2");
+		}
+		/**
+		 * 添加线杆到数据库
+		 */
+		function insertAddPole() {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/insertPoleInfo.spring",
+				data: JSON.stringify(InsertPoleInfoArr()),
+				datatype: "json",
+				contentType: "application/json",
+				success: function(data) {
+					//var poleid=data[0].poleid;
+					//alert(data[0].poleid);
+					for(var i = 1; i <= ExtralineNum; i++) {
+						poleinit.InsertAddLine(i, data[0].poleid);
+					}
+					mui.toast("添加线杆成功", {
+						duration: 1000,
+						type: 'div'
+					});
+				},
+			});
+		}
+		/**
+		 * 添加线路信息
+		 * @param {Object} index
+		 * @param {Object} poleid
+		 */
+		function insertAddLine(index, poleid) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/insertPoleLineDetail.spring",
+				data: JSON.stringify(InsertLineInfoArr(index, poleid)),
+				datatype: "json",
+				contentType: "application/json",
+				success: function(data) {},
+			});
+		}
+		/**
+		 * 添加的线杆信息
+		 */
+		function InsertPoleInfoArr() {
+			var poleInfo = {};
+			poleInfo["unitid"] = $(".PoleOfUnit").val();
+			poleInfo["timeString"] = $(".PoleOfTime").val();
+			poleInfo["longtitude"] = $(".PoleOfLng").val();
+			poleInfo["latitude"] = $(".PoleOfLat").val();
+			poleInfo["height"] = $("#PoleLength").val();
+			poleInfo["type"] = $(".PoleOfType").val();
+			poleInfo["status"] = $(".PoleOfStatus").val();
+			return poleInfo;
+		}
+		/**
+		 * 添加的线杆所属线路信息
+		 * @param {Object} index,poleid
+		 */
+		function InsertLineInfoArr(index, poleid) {
+			var LineInfo = {};
+			LineInfo["name"] = $(".LineOfPole" + index + " " + " .PoleOfName").val();
+			//alert($(".LineOfPole"+index+" "+" .PoleOfName").val());
+			LineInfo["code"] = $(".LineOfPole" + index + " " + " .PoleOfCode").val();
+			LineInfo["poleid"] = poleid;
+			LineInfo["lineid"] = Number($(".LineOfPole" + index + " " + " .LineInfo").val());
+			return LineInfo;
+		}
+
+		/**
+		 * 线路信息
+		 */
+		/**
+		 * 点击modal上取消
+		 */
+		$("#CancelLineBtn").click(function() {
+			$("#AddLineDiv").css("display", "none");
+		})
+		/**
+		 *点击modal上确定 
+		 */
+		$("#BottomLineBtn").click(function() {
+			$("#AddLineDiv").css("display", "none");
+			poleinit.InsertNewLine();
+		})
+		/**
+		 * 新建新的电力线路
+		 */
+		function insertNewLine() {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/insertLineInfo.spring",
+				data: JSON.stringify(InsertNewLineInfo()),
+				datatype: "json",
+				contentType: "application/json",
+				success: function(data) {
+					mui.toast("添加线路成功", {
+						duration: 1000,
+						type: 'div'
+					});
+				},
+			});
+		}
+		/**
+		 * 新建电力线路的信息
+		 */
+		function InsertNewLineInfo() {
+			var newLineArr = {};
+			newLineArr["unitid"] = Number($(".LineOfUnit").val());
+			newLineArr["name"] = $(".LineOfName").val();
+			newLineArr["linelength"] = $(".LineOfLength").val();
+			newLineArr["status"] = Number($(".LineOfStatus").val());
+			newLineArr["type"] = Number($(".LineOfType").val());
+			newLineArr["timeString"] = $(".LineOfCtime").val();
+			return newLineArr;
+		}
+		/*
+		 * 获取时间
+		 */
+		function NowDate() {
+			var d = new Date();
+			var year = d.getFullYear();
+			var mon = d.getMonth() + 1;
+			var day = d.getDate();
+			var hour = d.getHours();
+			var min = d.getMinutes();
+			var second = d.getSeconds();
+			return year + "-" + (mon < 10 ? ("0" + mon) : mon) + "-" + (day < 10 ? ("0" + day) : day) + " " + hour + ":" + min + ":" + second;
+		}
+		/*var map = new AMap.Map("container", {
+		    resizeEnable: true,
+		    center: [116.40, 39.91],
+		    zoom: 13
+		});
+		var marker = new AMap.Marker({
+		    map: map,
+		    position:map.getCenter(), //基点位置
+		    offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+		    cursor: 'move',
+		    raiseOnDrag: true,
+		    content:"<div id='buttonid'></div>",
+		});
+		marker.setMap(map);
+		marker.on('click',function(e){
+			alert(1);
+		});
+		AMap.event.addDomListener(document.getElementById('ICanMove'), 'click', function() {
+		  marker.setDraggable(true);
+		}, false);*/
+		/**
+		 *地图 
+		 */
+		var map = new AMap.Map("container", {
+			resizeEnable: true,
+			center: [121.611746, 29.911096], //地图中心点
+			zoom: 15, //地图显示的缩放级别
+			doubleClickZoom: false,
+		});
+		/**
+		 *	定位
+		 * 开始标记点
+		 * marker移动后经纬度
+		 */
+		var geolocation;
+		//var markrtposition = [116.40, 39.91];
+		var markerchange = [];
+		//AddMarker(markrtposition);
+		var marker;
+		/**
+		 *	 添加marker覆盖物
+		 * @param {Object} AddPosition
+		 */
+		function AddMarker(AddPosition) {
+			marker = new AMap.Marker({ //添加自定义点标记
+				map: map,
+				position: AddPosition, //基点位置
+				offset: new AMap.Pixel(-6, -5), //相对于基点的偏移位置
+				content: "<div class='buttonid'><div class='centerDiv'></div></div>" //自定义点标记覆盖物内容
+			});
+			marker.setMap(map);
+			marker.on('dblclick', function(e) {
+				marker.setDraggable(true);
+			});
+			marker.on('dragend', function(e) {
+				//infowindow.setContent(e.target.content);
+				//infowindow.open(map,e.target.getPosition());
+				//markerchange = [e.lnglat.getLng(), e.lnglat.getLat()];
+				/**
+				 * 显示添加线杆modal
+				 */
+				//$("#AddpoleDiv").css("display", "block");
+				/**
+				 * 添加线杆时定位信息
+				 */
+				/*$(".LineOfPole2").remove();
+				$(".LineOfPole3").remove();
+				$(".mui-scroll input").val("");
+				$(".PoleOfTime").val(NowDate());
+				$(".PoleOfLng").val(e.lnglat.getLng());
+				$(".PoleOfLat").val(e.lnglat.getLat());*/
+				addPoleWebView(e.lnglat.getLng(),e.lnglat.getLat());
+			});
+		}
+		//var infowindow=new AMap.InfoWindow({offset:new AMap.Pixel(-10,-30)});
+		// marker.content="<div id='markerInfo'>是否确定修改?</br><button onclick='OKModify()'>确定</button><button onclick='CancelModify()'>取消</button></div>";
+		//移动位置
+		/*	function OKModify(){
+		marker.setDraggable(false);
+		infowindow.close();
+		markrtposition=markerchange;
+		//alert(markrtposition);
+ 	}
+ 	//取消移动
+ 	function CancelModify(){
+ 		marker.hide();
+ 		infowindow.close();
+		AddMarker(markrtposition);
+ 	}*/
+		/*  AMap.event.addDomListener(document.getElementById('OKModify'), 'click', function() {
+		  		alert(1);
+		  		marker.setDraggable(false);
+		   }, false);
+		   AMap.event.addDomListener(document.getElementById('CancelModify'), 'click', function() {
+		     alert(1);
+		   }, false);*/
+		/**
+		 *定位 
+		 */
+		PositionFuc();
+
+		function PositionFuc() {
+			map.plugin('AMap.Geolocation', function() {
+				geolocation = new AMap.Geolocation({
+					enableHighAccuracy: true, //是否使用高精度定位，默认:true
+					timeout: 10000, //超过10秒后停止定位，默认：无穷大
+					buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+					//zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+					buttonPosition: 'LB',
+					showCircle: false,
+				});
+				map.addControl(geolocation);
+				geolocation.getCurrentPosition();
+				AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
+				//AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+			});
+		}
+
+		function onComplete(data) {
+			locationMarker = [data.position.getLng(), data.position.getLat()];
+		}
+		var polemarkers = [];
+		var polemarker;
+		/**
+		 * 加载数据库所有线杆信息
+		 */
+		function selectAllPoleInfo() {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/selectAllPole.spring",
+				datatype: "json",
+				//contentType:"application/json;charset=UTF-8",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						AutoAddMarker([data[i].longtitude, data[i].latitude], data[i].poleid, i);
+						//polemarkers.push([data[i].longtitude,data[i].latitude]);
+					}
+				},
+			});
+		}
+		/**
+		 * 信息窗体
+		 */
+		var infoWindow = new AMap.InfoWindow();
+		/**
+		 * 加载数据库的pole
+		 * @param {Object} AddPosition
+		 */
+		function AutoAddMarker(AddPosition, poleid, index) {
+			var poleindex = "pole" + poleid;
+			polemarker = new AMap.Marker({ //添加自定义点标记
+				map: map,
+				position: AddPosition, //基点位置
+				offset: new AMap.Pixel(-6, -5), //相对于基点的偏移位置
+				content: "<div class='markerid'><div class='MarkercenterDiv'><span style='display:none' id='" + poleindex + "'>" + poleid + "</span></div></div>" //自定义点标记覆盖物内容
+			});
+			polemarker.setMap(map);
+			/**
+			 * 设置marker自定义属性
+			 */
+			polemarker.setExtData(poleid);
+			polemarker.content = "<ul class='mui-table-view'>" +
+							"<li class='mui-table-view-cell mui-collapse mui-active' onclick='AddActive(this)'>" +
+							"   <a class='mui-navigate-right' href='#'>所属线路</a>" +
+							"  <div class='mui-collapse-content content1'>" +
+							"</div>" +
+							"</li>" +
+							"<li class='mui-table-view-cell mui-collapse' onclick='AddActive(this)'>" +
+							"   <a class='mui-navigate-right' href='#'>线杆</a>" +
+							"  <div class='mui-collapse-content content2'>" +
+							"</div>" +
+							"</li>" +
+							"<li class='mui-table-view-cell mui-collapse' onclick='AddActive(this)'>" +
+							"   <a class='mui-navigate-right' href='#'>搭挂线路</a>" +
+							"  <div class='mui-collapse-content content3'>" +
+							"</div>" +
+							"</li>" +
+							"</ul>";
+			polemarker.on('click', function(e) {
+				//mui('.mui-popover').popover('toggle',document.getElementById("popoverDiv"));
+				poleinit.SelectAllLineByPoleid(this, e);
+			});
+			/**
+			 * 所有点标记
+			 */
+			polemarkers.push(polemarker);
+		}
+		/*
+		 * 面板点击事件
+		 */
+		function AddActive(event) {
+			$(event).addClass("mui-active");
+			$(event).siblings().removeClass("mui-active");
+		}
+		$("#DelPoleMap").click(function() {
+			$("#DelPoleMap").css("display", "none");
+			$("#ClosePoleMap").css("display", "block");
+			for(var i = 0; i < polemarkers.length; i++) {
+				polemarkers[i].setDraggable(true);
+				polemarkers[i].on('dragend', function(e) {
+					//polemarkers[i].content="<div id='markerInfo'>是否确定修改?</br><button onclick='OKModify("+polemarkers[i]+")'>确定</button><button onclick='CancelModify()'>取消</button></div>";
+					//alert($(".pole"+i).text())
+					/*
+					 * 修改移动后位置
+					 */
+					//alert(e.lnglat.getLng());
+					poleinit.ModifyPolePosition(this.getExtData(), e.lnglat.getLng(), e.lnglat.getLat());
+				});
+			}
+		});
+		/**
+		 * 关闭编辑操作
+		 */
+		$("#ClosePoleMap").click(function() {
+			$("#DelPoleMap").css("display", "block");
+			$("#ClosePoleMap").css("display", "none");
+			for(var i = 0; i < polemarkers.length; i++) {
+				polemarkers[i].setDraggable(false);
+			}
+		})
+		/**
+		 * 修改线杆坐标
+		 * @param {Object} poleid
+		 * @param {Object} lng
+		 * @param {Object} lat
+		 */
+		function modifyPolePosition(poleid, lng, lat) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/modifyPolePosition.spring",
+				data: JSON.stringify({
+					poleid: poleid,
+					longtitude: lng,
+					latitude: lat,
+				}),
+				dataType: "json",
+				contentType: "application/json;charset=UTF-8",
+				success: function(data) {},
+			});
+		}
+		/**
+		 * 根据poleid查找所属线路信息,搭挂线路信息，线杆信息
+		 * @param {Object} thismarker
+		 */
+		function selectAllLineByPoleid(thismarker, thisevent) {
+			$(".content1").text("");
+			$(".content2").text("");
+			$(".content3").text("");
+			infoWindow.setContent(thisevent.target.content);
+			infoWindow.open(map, thismarker.getPosition());
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/selectAllLineByPoleid.spring",
+				data: {
+					poleid: thismarker.getExtData(),
+				},
+				dataType: "json",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						/**
+						 * 加载数据库marker的点击事件
+						 */
+						$(".content1").append("<div class='polename'><h5>" + data[i].linename + "</h5></div>");
+						for(var j = 0; j < data[i].lineList.length; j++) {
+							$(".polename").append(data[i].lineList[j].name + ",");
+						}
+					}
+					poleinit.SelectPoleInfoBypoleId(thismarker.getExtData());
+					poleinit.SelectHangLineByPoleid(thismarker.getExtData())
+				},
+			});
+		}
+		/**
+		 * 根据poleid查找信息
+		 * @param {Object} poleid
+		 */
+		function selectPoleInfoBypoleId(poleid) {
+			$.ajax({
+				type: "post",
+				url: urlJson + "LinePole/selectPoleInfoByPoleid.spring",
+				data: {
+					poleid: poleid
+				},
+				dataType: "json",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$(".content2").append("<div>线杆状态:" + data[i].statusname + "</br>线杆类型:" + data[i].typename + "</br>线杆高度:" + data[i].height + "</br>所属单位:" + data[i].unitname + "</div>");
+					}
+				},
+			});
+		}
+		/**
+		 * 搭挂线路查询
+		 * poleid
+		 */
+		function selectHangLineByPoleid(poleid){
+			$.ajax({
+				type: "post",
+				url: urlJson + "HangLine/selectHangLineByPoleid.spring",
+				data: {
+					poleid: poleid
+				},
+				dataType: "json",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						 $(".content3").append("<div class='hangname'><h5>" + data[i].hangname + "</h5></div>");
+						 /*for(var j=0;j<data[i].hangList.length;j++)
+						 {
+						 	$(".hangname").append(data[i].hangList[j].name + ",");
+						 }*/
+					}
+				},
+			});
+		}
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * 弹出addpole界面
+		 * @param {Object} lng
+		 * @param {Object} lat
+		 */
+		function addPoleWebView(lng,lat){
+			var webviewAddPole=plus.webview.create('AddPole.html',"addPole",{
+				position:'absolute',
+				scrollIndicator:'none',
+				animationOptimization:'auto',
+				background:'transparent',
+			});
+			webviewAddPole.show();
+			webviewAddPole.evalJS("SetPosition('"+lng+"','"+lat+"')");
+		}
+			/**
+			 * 弹出addline界面
+			 * @param {Object} lng
+			 * @param {Object} lat
+			 */
+			function addLineWebView(lng,lat){
+				var webviewAddLine=plus.webview.create('AddLine.html',"addLine",{
+					position:'absolute',
+					scrollIndicator:'none',
+					animationOptimization:'auto',
+					background:'transparent',
+				});
+				webviewAddLine.show();
+				//webviewAddPole.evalJS("SetPosition('"+lng+"','"+lat+"')");
+			}
+		function continueDrag(){
+			mui.toast("您可以重新添加线杆");
+		}
+	</script>
+
+</html>

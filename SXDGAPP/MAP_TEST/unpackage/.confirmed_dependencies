@@ -1,0 +1,390 @@
+{
+  "MapTest.html": {
+    "resources": [
+      "js/jquery-1.8.0.min.js",
+      "css/mui.min.css",
+      "js/immersed.js",
+      "fonts/mui.ttf",
+      "js/mui.min.js",
+      "plus/maps_map_sub.html",
+      "InfoWindow.html"
+    ],
+    "refer": [
+      "plus/maps_map_sub.html",
+      "InfoWindow.html"
+    ]
+  },
+  "InfoWindow.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "fonts/mui.ttf",
+      "images/sa.png"
+    ],
+    "refer": []
+  },
+  "examples/nav.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mIndex.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "images/sa.png",
+      "js/common.js",
+      "js/properties.json",
+      "images/add.png"
+    ],
+    "refer": [
+      "InfoWindow.html",
+      "MapTools.html",
+      "UploadBtn.html",
+      "AddLine.html",
+      "AddPole.html",
+      "ConfirmNewPoleBtn.html",
+      "faultRecord.html"
+    ]
+  },
+  "MapTools.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "fonts/mui.ttf",
+      "css/common.css",
+      "images/iconfont-tianjia.png"
+    ],
+    "refer": []
+  },
+  "UploadBtn.html": {
+    "resources": [
+      "images/sa.png",
+      "css/common.css",
+      "images/uploadBtn.png",
+      "css/style.css",
+      "css/reset.css",
+      "js/index.js",
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "test.html": {
+    "resources": [
+      "css/style.css",
+      "js/index.js",
+      "css/reset.css",
+      "js/jquery-1.8.0.min.js"
+    ],
+    "refer": []
+  },
+  "defectRecord.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/app.css",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "js/common.js",
+      "css/common.css",
+      "js/jquery-1.8.0.min.js",
+      "images/qq.png"
+    ],
+    "refer": [
+      "plus/camera_image.html"
+    ]
+  },
+  "plus/camera_image.html": {
+    "resources": [
+      "css/common.css",
+      "js/common.js"
+    ],
+    "refer": []
+  },
+  "plus/uploader.html": {
+    "resources": [
+      "js/common.js",
+      "css/common.css",
+      "js/immersed.js"
+    ],
+    "refer": [
+      "plus/uploader_ret.html",
+      "plus/doc.html"
+    ]
+  },
+  "plus/uploader_ret.html": {
+    "resources": [
+      "css/common.css"
+    ],
+    "refer": []
+  },
+  "login.html": {
+    "resources": [
+      "js/app.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/mui.enterfocus.js",
+      "fonts/mui.ttf",
+      "images/qq.png",
+      "images/loginLogo.png",
+      "js/properties.json"
+    ],
+    "refer": [
+      "reg.html",
+      "MapTest.html",
+      "mIndex.html",
+      "pullrefresh_main.html",
+      "main_task.html",
+      "main.html"
+    ]
+  },
+  "reg.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css"
+    ],
+    "refer": []
+  },
+  "pullrefresh_main.html": {
+    "resources": [
+      "css/mui.min.css",
+      "pullrefresh_sub.html"
+    ],
+    "refer": [
+      "pullrefresh_sub.html"
+    ]
+  },
+  "pullrefresh_sub.html": {
+    "resources": [
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "main_task.html": {
+    "resources": [
+      "task_content.html",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "examples/tab-webview-subpage-contact.html"
+    ],
+    "refer": [
+      "task_content.html",
+      "mIndex.html",
+      "examples/tab-webview-subpage-contact.html",
+      "taskContent.html",
+      "index.html",
+      "examples/tab-webview-subpage-chat.html"
+    ]
+  },
+  "task_content.html": {
+    "resources": [
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "js/mui.min.js",
+      "images/qihoo.png",
+      "js/jquery-1.8.0.min.js",
+      "js/properties.json"
+    ],
+    "refer": [
+      "defectRecord.html",
+      "faultRecord.html"
+    ]
+  },
+  "examples/tab-webview-subpage-contact.html": {
+    "resources": [
+      "images/60x60.gif",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "taskContent.html": {
+    "resources": [
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "index.html": {
+    "resources": [
+      "js/jquery-1.8.0.min.js",
+      "js/update.js"
+    ],
+    "refer": [
+      "index-menu.html",
+      "examples/guide.html"
+    ]
+  },
+  "index-menu.html": {
+    "resources": [
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "examples/pullrefresh_with_tab.html": {
+    "resources": [
+      "js/mui.pullToRefresh.js",
+      "js/mui.min.js",
+      "js/mui.pullToRefresh.material.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "tab-webview-subpage-about.html": {
+    "resources": [
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "main.html": {
+    "resources": [
+      "tab-webview-subpage-about.html",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "main_task.html",
+      "Search.html",
+      "css/icons-extra.css",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "tab-webview-subpage-about.html",
+      "tab-webview-subpage-chat.html",
+      "tab-webview-subpage-contact.html",
+      "main_task.html",
+      "mIndex.html",
+      "Search.html",
+      "task_content.html"
+    ]
+  },
+  "tab-webview-subpage-contact.html": {
+    "resources": [
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "Search.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/jquery-1.8.0.min.js",
+      "images/cbd.jpg",
+      "images/yuantiao.jpg",
+      "images/muwu.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "images/shuijiao.jpg",
+      "js/properties.json",
+      "images/pole.jpg",
+      "images/pole.png",
+      "images/NewPole.png"
+    ],
+    "refer": []
+  },
+  "examples/pullrefresh.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "AddLine.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "css/common.css",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "fonts/mui.ttf",
+      "js/properties.json"
+    ],
+    "refer": []
+  },
+  "AddPole.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.picker.js",
+      "js/mui.poppicker.js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "fonts/mui.ttf",
+      "js/properties.json",
+      "images/add.png",
+      "images/jian.png"
+    ],
+    "refer": [
+      "AddLine.html"
+    ]
+  },
+  "ConfirmNewPoleBtn.html": {
+    "resources": [
+      "css/common.css",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "examples/modals.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "faultRecord.html": {
+    "resources": [
+      "js/mui.picker.js",
+      "js/common.js",
+      "css/common.css",
+      "js/mui.poppicker.js",
+      "css/mui.min.css",
+      "css/mui.poppicker.css",
+      "css/mui.picker.css",
+      "images/qq.png",
+      "images/defaultPic.png",
+      "js/mui.min.js",
+      "js/jquery-1.8.0.min.js",
+      "fonts/mui.ttf",
+      "js/properties.json"
+    ],
+    "refer": [
+      "plus/camera_image.html"
+    ]
+  },
+  "plus/camera.html": {
+    "resources": [
+      "js/common.js",
+      "css/common.css",
+      "js/immersed.js"
+    ],
+    "refer": [
+      "plus/camera_image.html"
+    ]
+  },
+  "dafault.html": {
+    "resources": [
+      "js/app.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/mui.enterfocus.js"
+    ],
+    "refer": []
+  }
+}

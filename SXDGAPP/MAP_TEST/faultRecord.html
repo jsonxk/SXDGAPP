@@ -1,0 +1,780 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="./js/common.js"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<script type="text/javascript" src="./js/jquery-1.8.0.min.js"></script>
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+		<!--<link rel="stylesheet" type="text/css" href="./css/app.css" />-->
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" type="text/css" charset="utf-8" />
+		<style>
+			.mui-plus .plus {
+				display: inline;
+			}
+			
+			.plus {
+				display: none;
+			}
+			
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+			
+			p {
+				text-indent: 22px;
+			}
+			/*span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}*/
+			
+			.mui-popover {
+				height: 300px;
+			}
+			/*.mui-content {
+				padding: 10px;
+			}*/
+			
+			.selectedHangLine {
+				float: left;
+				margin: 2%;
+			}
+			
+			.selectedHangLine span {
+				color: #007AFF;
+			}
+			
+			#imgshow {
+				width: 50px;
+				height: 80px;
+				margin: 5px 0 0 2%;
+				border: 1px solid #FFFFFF;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">信息录入</h1>
+		</header>
+		<div class="mui-content">
+			<!--
+            	作者：673542123@qq.com
+            	时间：2017-12-07
+            	描述：线路线杆显示区
+            -->
+			<div class="mui-card">
+				<button id="lastPole" class="mui-icon mui-icon-back" style="float:left;width:15%;height:33px;margin-top:5px;margin-bottom: 5px;"></button>
+				<a id="linePoleInfo" class="mui-btn mui-btn-primary mui-btn-outlined" style="margin:5px 3%;width:60%;height:33px;overflow-x: auto;"></a>
+				<button id="nextPole" class="mui-icon mui-icon-forward" style="float:right;width:15%;height:33px;margin:5px 5px 5px 0;"></button>
+				<span class="selectedHangLine">所选搭挂线路:<span></span></span>
+			</div>
+			<!--
+            	作者：673542123@qq.com
+            	时间：2017-12-07
+            	描述：原始数据录入显示区
+            -->
+			<!--<div class="mui-card" style="overflow: auto;">
+				<ul id="faultTypeArea" class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">原始数据录入</a>
+						<div class="mui-collapse-content" style="height:500px">
+							<img id="imgShowBack" src="images/defaultPic.png" style="width:50%;height:150px" onclick="displayFile()" />
+							<div style="width:48%;height:150px;float:right;border:solid 1px;">
+								<ul id="faultArea">
+
+								</ul>
+							</div>
+
+							<button class="mui-btn" type="button" style="height:30px;width:26.4%" onclick="deleteCurrentPhoto()">删除照片</button>
+							<button class="mui-btn" type="button" style="height:30px;width:26.4%" onclick="getImage()">拍照取证</button>
+							<button id="showCheckTypePicker" class="mui-btn" type="button" style="height:30px;width:38%">添加缺陷类型</button>
+
+							<div class="mui-input-row" style="margin-top: 5px;margin-left: 5px;">
+								<textarea id="photoDescription" rows="1" placeholder="照片描述"></textarea>
+							</div>
+
+							<div class="mui-input-row" style="margin-top: 5px;margin-left: 5px;">
+								<textarea id="description" rows="2" placeholder="检查详情描述"></textarea>
+							</div>
+
+							<div class="mui-button-row">
+								<button type="button" class="mui-btn mui-btn-danger" onclick="pageReload()">清除</button>
+								<button type="button" class="mui-btn mui-btn-primary" onclick="picZip()">提交</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>-->
+			<div class="mui-card" style="overflow: auto;">
+				<ul id="faultTypeArea" class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">图片信息</a>
+						<div class="mui-collapse-content">
+							<div style="width:100%;float:right;border:solid 1px;" id="imgshow">
+								<img id="imgShowBack" src="images/defaultPic.png" style="width:50px;height:80px;margin:0 0 0 2%;" onclick="getImage()" />
+							</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">描述信息</a>
+						<div class="mui-collapse-content">
+							<div class="mui-input-row">
+								<textarea id="description" rows="1" placeholder="照片描述"></textarea>
+							</div>
+
+							<div class="mui-input-row">
+								<textarea id="chkDtldescription" rows="2" placeholder="检查详情描述"></textarea>
+							</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">检查类型</a>
+						<div class="mui-collapse-content">
+							<button id="showCheckTypePicker" class="mui-btn" type="button" style="height:30px;width:38%">添加缺陷类型</button>
+							<div class="mui-input-row">
+								<label>检查类别</label>
+								<input id="checktype" type="text" class="mui-input-clear" readonly placeholder="请选择检查类别">
+								<input id="checktypenone" type="text" class="mui-input-clear" style="display: none;">
+							</div>
+							<div class="mui-input-row">
+								<label>检查详情</label>
+								<input id="checkitem" type="text" class="mui-input-clear" readonly placeholder="请选择检查项目">
+								<input id="checkitemnone" type="text" class="mui-input-clear" style="display: none;">
+							</div>
+							<div class="mui-input-row">
+								<label>缺陷类别</label>
+								<select id="faultType">
+									<option value="0">无缺陷</option>
+								</select>
+							</div>
+						</div>
+					</li>
+					<!--<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">历史缺陷</a>
+						<div class="mui-collapse-content">
+							<p>面板1子内容</p>
+						</div>
+					</li>-->
+				</ul>
+			</div>
+			<nav class="mui-bar mui-bar-tab">
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-danger" onclick="pageReload()">清除</button>
+					<button type="button" class="mui-btn mui-btn-primary" onclick="picZip()" style="margin: 0 0 15px 30% ;">提交</button>
+				</div>
+			</nav>
+		</div>
+		<!--点击线路线杆信息显示的popover-->
+		<div id="middlePopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="hangPoleArea" class="mui-table-view">
+						<!--<li class="mui-table-view-cell">
+							<a href="#">Item1</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">Item2</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a href="#">Item3</a>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/mui.picker.js"></script>
+		<script src="./js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var allHangPoleList = new Array();
+			var CheckLineData = new Array();
+			var checkTypePicker = new mui.PopPicker({
+				layer: 2
+			});
+			var showCheckTypePickerButton = document.getElementById('showCheckTypePicker');
+			mui('.mui-scroll-wrapper').scroll();
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			/**
+			 * 服务器地址
+			 */
+			var urlJson;
+			$.getJSON("js/properties.json", function(data) {
+				urlJson = data[0].url;
+			});
+			/**
+			 * 线路检查id
+			 * 线杆id
+			 * 搭挂线路id
+			 * 搭挂线路名称
+			 * 搭挂线杆名称
+			 * 任务流程id
+			 */
+			var lineCheckId;
+			var poleId;
+			var hangLineId;
+			var hangLineName;
+			var poleName;
+			var processId;
+			var handdetailid;
+			var hangpoleNum=0;
+			mui.plusReady(function() {
+				/**
+				 * 当前界面
+				 */
+				var localselef = plus.webview.currentWebview();
+				/**
+				 * poleid和hanglineid必定有一个为空
+				 */
+				poleId = localselef.poleid;
+				lineCheckId = localselef.linecheckid;
+				hangLineId = localselef.hanglineid;
+				hangLineName = localselef.hangname;
+				poleName = localselef.polename;
+				processId = localselef.processid;
+				handdetailid=0;
+				//mui.toast(poleId+"ss"+hangLineId); 
+				/**
+				 * 线杆信息显示区
+				 */
+				var hangPoleArea = document.getElementById("hangPoleArea");
+				/**
+				 * 0表示搜索的是线杆
+				 */
+				var linePoleInfo = document.getElementById('linePoleInfo');
+				if(hangLineId == 0) {
+					$(".selectedHangLine span").text("无");
+					hangpoleNum=1;
+					linePoleInfo.innerHTML = "";
+					linePoleInfo.innerHTML = poleName;
+					linePoleInfo.onclick = function() {
+						mui.toast("请选择搭挂线路");
+					}
+				} else {
+					$(".selectedHangLine span").text(hangLineName);
+					mui.ajax(urlJson + "HangLine/selectHangPoleByHangLineid.spring", {
+						data: {
+							hanglineid: hangLineId
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							//alert(data[0].hangList[0]);
+							if(data!=null&&data!="")
+							{
+							hangpoleNum=data.length;
+							poleId=data[0].poleid;
+							handdetailid=data[0].handdetailid;
+							for(var i = 0; i < data.length; i++) {
+								if(data[i].hangList.length > 0) {
+									var linepoleinfo = document.getElementById("linePoleInfo");
+									linepoleinfo.innerHTML = "";
+									linepoleinfo.innerHTML = data[0].hangList[0].polename;
+									linepoleinfo.onclick = function() {
+										mui('#middlePopover').popover('show', linepoleinfo);
+									}
+									var li = document.createElement("li");
+									li.className = "mui-table-view-cell";
+									li.className = "PoleLi"+data[i].poleid;
+									li.innerHTML = "<li><span>" + data[i].hangList[0].polename + "</span><div hidden='hidden'>" + data[i].poleid + "</div><div hidden='hidden'>" + data[i].handdetailid + "</div></li>";
+									li.onclick = function() {
+										mui('#middlePopover').popover('hide');
+										$("#imgShowBack").siblings().remove();
+										$("#description").val("");
+										$("#chkDtldescription").val("");
+										$("#checktype").val("");
+										$("#checktypenone").val("");
+										$("#checkitem").val("");
+										$("#checkitemnone").val("");
+										poleId=$(this).find('div').eq(0).text();
+										handdetailid=$(this).find('div').eq(1).text();
+										linePoleInfo.innerHTML = "";
+										linePoleInfo.innerHTML = $(this).find('span').eq(0).text();;
+									}
+									hangPoleArea.appendChild(li);
+									/**
+									 * poleid直接通过success加载不出来
+									 */
+									poleId=$("#hangPoleArea").children().find('div').eq(0).text();
+								} else {
+									mui.toast("没有相关的搭挂线路信息");
+								}
+							}
+							}
+							else{
+								setTimeout(function(){
+									var ws=plus.webview.currentWebview();
+									plus.webview.close(ws);
+									mui.toast("当前搭挂线路没有所属线杆");
+								},1000);
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							mui.toast("服务器请求异常！");
+						}
+					});
+				}
+				/**
+				 * 查找检查类型
+				 */
+				SelectLineChkType();
+				/**
+				 *查找缺陷类型 
+				 */
+				LineTypeInfo("缺陷类型");
+			});
+
+			/*function timeFormatter(value) {
+
+				var da = new Date(parseInt(value.replace("/Date(", "").replace(")/", "").split("+")[0]));
+
+				return da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate() + " " + da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds();
+
+			}*/
+			/**
+			 * 查询所有的搭挂线路检查类型
+			 */
+			function SelectLineChkType() {
+				mui.ajax(urlJson + "FaultMS/selectLineChkType.spring", {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							var childdata = new Array();
+							/**
+							 * 设置检查类型初始值
+							 */
+							/*$("#checktype").val(data[0].name);
+							$("#checktypenone").val(data[0].checktypeid);
+							$("#checkitem").val(data[0].itemlist[0].name);
+							$("#checkitemnone").val(data[0].itemlist[0].checkitemid);*/
+							if(data[i].itemlist.length > 0) {
+								//alert(data[i].itemlist.length);
+								for(var j = 0; j < data[i].itemlist.length; j++) {
+									var childObj = {
+										text: data[i].itemlist[j].name,
+										value: data[i].itemlist[j].checkitemid,
+									};
+									childdata.push(childObj);
+								}
+							} else {
+								childdata.push(null);
+							}
+							var checklineobj = {
+								text: data[i].name,
+								value: data[i].checktypeid,
+								children: childdata,
+							}
+							CheckLineData.push(checklineobj);
+						}
+						checkTypePicker.setData(CheckLineData);
+						showCheckTypePickerButton.addEventListener('tap', function(event) {
+							//alert("111");
+							checkTypePicker.show(function(items) {
+								//checkTypeResult.innerText = JSON.stringify(items[0]);
+								//alert( items[0].text+items[1].value);
+								if(items[1].value != null && items[1].value != "") {
+									$("#checktype").val(items[0].text);
+									$("#checktypenone").val(items[0].value);
+									$("#checkitem").val(items[1].text);
+									$("#checkitemnone").val(items[1].value);
+								} else {
+									mui.toast("请重新选择检查类型");
+								}
+							});
+						}, false);
+
+					}
+				});
+			}
+
+			function pageReload() {
+				location.reload();
+			}
+
+			/**
+			 * 上传图片路径
+			 */
+			var newPath = "";
+
+			/**
+			 * 检查时间
+			 * 拍照时间
+			 * 检查描述
+			 * 将图片描述
+			 * poleid
+			 */
+			var chkDtlCreateTime;
+			var photoCreateTime;
+			var chkDtlDescription;
+			var photoDescription;
+			var chkDtlPoleId;
+
+			var w = null;
+			var wt = null;
+			//调用摄像头
+			function getImage() {
+				var timestamp = new Date().getTime()
+				/**
+				 *获取摄像头管理对象 
+				 */
+				var c = plus.camera.getCamera();
+				/**
+				 * 拍照操作
+				 * param 成功回调{路径} ，失败回调，拍照参数{filename,format,index,popover{不支持按钮}}
+				 */
+				c.captureImage(function(e) {
+						/**
+						 * 通过url参数获取文件对象
+						 * {url，success，error}
+						 */
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							/**
+							 * 本地路径URL
+							 */
+							var path = entry.toLocalURL();
+							//alert(path);
+							//document.getElementById("imgShowBack").src = "images/defaultPic.png";
+							$("#imgshow").append("<img  src='" + path + "' style='width:50px;height:78px;margin:0 0 2px 2%;' onclick='displayFile(this.src)' ontouchstart='imgtouch(this)' ontouchend='imgtouchEnd()'/>");
+							//document.getElementById("imgShowBack").src = path;
+							/**
+							 * 拍照时间
+							 */
+							photoCreateTime = getNowFormatDate();
+
+						}, function(e) {
+							mui.toast("读取拍照文件错误：" + e.message);
+						});
+					},
+					function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/" + timestamp + ".jpg"
+					})
+			};
+			/**
+			 * 长按删除
+			 */
+			var timeout = undefined;
+
+			function imgtouch(thisimg) {
+				clearTimeout(timeout);
+				timeout = setTimeout(function() {
+					var btnArray = ['否', '是'];
+					mui.confirm('确认删除图片？', '删除', btnArray, function(e) {
+						if(e.index == 1) {
+							$(thisimg).remove();
+						} else {
+							mui.toast("取消删除");
+						}
+					})
+				}, 1000);
+			}
+
+			function imgtouchEnd() {
+				clearTimeout(timeout);
+			}
+			/**
+			 * 提交时压缩图片
+			 */
+			function picZip() {
+				if(hangpoleNum<=0)
+				{
+					setTimeout(function(){
+						var btnArray = ['否', '是'];
+						mui.confirm('是否返回', '当前线路检查完毕？', btnArray, function(e) {
+							if (e.index == 1) {
+								var ws=plus.webview.currentWebview();
+								plus.webview.close(ws);
+							} else {
+								
+							}
+						})
+					},1500);
+				}
+				else{
+					/**
+				 * 所有的图片信息
+				 */
+				wt = plus.nativeUI.showWaiting();
+				var imginfo = $("#imgShowBack").siblings("img");
+				if(imginfo.length>0)
+				{
+					for(var i = 0; i < imginfo.length; i++) {
+						ImageZip(i);
+					}
+				}
+				else{
+					wt.close();
+					plus.nativeUI.toast("您还没有拍摄照片", {
+						'verticalAlign': 'top'
+					});
+				}
+				}
+			}
+
+			function ImageZip(i) {
+				var imginfo = $("#imgShowBack").siblings("img");
+				if(imginfo[i].src != "") {
+					newPath = "_doc/" + lineCheckId + "_17_" + getNameByDate() + ".jpg";
+					//alert(newPath);
+					/**
+					 * 显示等待对话框
+					 */
+					//alert(newPath);
+					/**
+					 * 图片压缩转换{路径，success回调，error回调}
+					 */
+					CameraArr.push(newPath);
+					plus.zip.compressImage({
+							src: imginfo[i].src, //原始路径
+							dst: newPath, //压缩转换路径
+							quality: 70
+						},
+						function() {
+							upload(newPath, i);
+						},
+						function(error) {
+							alert("Compress error!");
+						});
+					//setTimeout("",200);
+				} else {
+				}
+			}
+			/**
+			 * 文件上传
+			 * @param {Object} path
+			 * @param {Object} index 文件数量
+			 */
+			var CameraArr = new Array();
+
+			function upload(path, index) {
+				/*if(files.length <= 0) {
+					plus.nativeUI.alert("没有添加上传文件！");
+					return;
+				}*/
+				wt.close();
+				var imginfo = $("#imgShowBack").siblings("img");
+				if((imginfo.length - 1) == index) {
+					//alert(imginfo.length);
+					/**
+					 * 新建上传任务{url,参数，回调}
+					 */
+					var flag;
+					var task = plus.uploader.createUpload(urlJson + "FaultMS/photoUpLoad.spring", {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if(status == 200) {
+								//alert("上传成功");
+								flag = status;
+								wt.close();
+								CameraArr = [];
+								/*plus.storage.setItem("uploader", t.responseText);
+								var w = plus.webview.create("uploader_ret.html", "uploader_ret.html", {
+									scrollIndicator: 'none',
+									scalable: false
+								});
+								w.addEventListener("loaded", function() {
+									wt.close();
+									w.show("slide-in-right", 300);
+								}, false);*/
+								mui.toast("上传成功");
+								hangpoleNum--;
+								$(".PoleLi"+""+poleId).remove();
+							} else {
+								//alert("上传失败：" + status);
+								CameraArr = [];
+								wt.close();
+								mui.toast("上传失败");
+							}
+						}
+					);
+					/**
+					 * 添加所有的图片文件
+					 */
+					for(var i = 0; i < CameraArr.length; i++) {
+						/**
+						 * 文件路径
+						 * 文件参数
+						 */
+						//alert(CameraArr[i]);
+						task.addFile(CameraArr[i], {
+							key: CameraArr[i]
+						});
+					}
+					/**
+					 * 检查人
+					 * 检查搭挂线路所属单位
+					 */
+					//task.addData("userid", 1);
+					//task.addData("unitid", 3);
+
+					/**
+					 * 检查信息上传参数
+					 */
+					var checkDtlItem = $("#checkitemnone").val();
+					//alert(checkDtlItem);
+					if(checkDtlItem != null && checkDtlItem != "") {
+						/**
+						 * 检查拍照时间
+						 * 检查拍照描述
+						 */
+						task.addData('linechkid',lineCheckId+"");
+						//alert(poleId);
+						//mui.toast(poleId);
+						task.addData('poleid', poleId+"");
+						//task.setData('hanglineid', hangLineId);
+						task.addData('processid', processId+"");
+						task.addData("Stringcreatetime", photoCreateTime);
+						task.addData("description", $("#description").val());
+						/**
+						 * 检查细节{线路检查时间，线路检查描述，线杆检查细节时间，缺陷类型[无，线路，线杆]，检查的线杆}
+						 */
+						task.addData("chkDtlDescription", $("#chkDtldescription").val());
+						task.addData("StringchkDtlCreatetime", getNowFormatDate());
+						task.addData("chkDtlstatus", $("#faultType").val()+"");
+						task.addData('checkitemid', checkDtlItem+"");
+						task.addData('checktypeid',$("#checktypenone").val()+""); 
+						task.addData('hangdetailid',handdetailid+""); 
+						/**
+						 * 线杆id
+						 * 线路id
+						 * 流程实例id
+						 */
+						//alert(Number(lineCheckId));
+						//alert($("#faultType").val());
+						task.start();
+					}
+					else{
+						wt.close();
+						mui.toast("请选择检查类型");
+					}
+					if(flag == 200) {
+						mui.toast("信息上传成功", 1000);
+					}
+				}
+			}
+
+			function LineTypeInfo(typename) {
+				mui.ajax(urlJson + "HangLine/selectHangStatus.spring", {
+					data: {
+						typename: typename,
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#faultType").append("<option value=" + data[i].dicitemid + ">" + data[i].item + "</option>");
+						}
+					}
+				});
+			}
+			// 显示文件
+			function displayFile(thissrc) {
+				if(w) {
+					alert('重复点击！');
+					return;
+				}
+				var name = thissrc.split("//")[thissrc.split("//").length - 1];
+				var suffix = name.substr(name.lastIndexOf('.'));
+				var url = '';
+				if(suffix == '.mov' || suffix == '.3gp' || suffix == '.mp4' || suffix == '.avi') {
+					//if(unv){plus.runtime.openFile('_doc/camera/'+name);return;}
+					url = '/plus/camera_video.html';
+				} else {
+					url = '/plus/camera_image.html';
+				}
+				w = plus.webview.create(url, url, {
+					hardwareAccelerated: true,
+					scrollIndicator: 'none',
+					scalable: true,
+					bounce: 'all'
+				});
+				w.addEventListener('loaded', function() {
+					w.evalJS('loadMedia("' + thissrc + '")');
+					//w.evalJS('loadMedia("'+'http://localhost:13131/_doc/camera/'+name+'")');
+				}, false);
+				w.addEventListener('close', function() {
+					w = null;
+				}, false);
+				w.show('pop-in');
+			}
+			/**
+			 * 获取当前时间
+			 */
+			function getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if(month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if(strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+					" " + date.getHours() + seperator2 + date.getMinutes() +
+					seperator2 + date.getSeconds();
+				return currentdate;
+			}
+
+			function getCurrentDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if(month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if(strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+				return currentdate;
+			}
+			/**
+			 * 当前时间戳
+			 */
+			function getNameByDate() {
+				var date = new Date();
+				return date.getTime();
+			}
+		</script>
+	</body>
+
+</html>
